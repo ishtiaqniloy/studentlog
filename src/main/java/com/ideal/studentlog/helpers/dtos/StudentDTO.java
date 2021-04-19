@@ -1,4 +1,4 @@
-package com.dsi.studentlog.helpers.dtos;
+package com.ideal.studentlog.helpers.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

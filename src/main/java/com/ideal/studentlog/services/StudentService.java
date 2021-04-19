@@ -1,8 +1,8 @@
-package com.dsi.studentlog.services;
+package com.ideal.studentlog.services;
 
-import com.dsi.studentlog.database.models.Student;
-import com.dsi.studentlog.database.repositories.StudentRepository;
-import com.dsi.studentlog.helpers.dtos.StudentDTO;
+import com.ideal.studentlog.database.models.Student;
+import com.ideal.studentlog.database.repositories.StudentRepository;
+import com.ideal.studentlog.helpers.dtos.StudentDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

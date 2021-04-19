@@ -1,4 +1,4 @@
-package com.dsi.studentlog.database.models;
+package com.ideal.studentlog.database.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

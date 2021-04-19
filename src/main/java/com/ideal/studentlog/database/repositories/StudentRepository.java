@@ -1,6 +1,6 @@
-package com.dsi.studentlog.database.repositories;
+package com.ideal.studentlog.database.repositories;
 
-import com.dsi.studentlog.database.models.Student;
+import com.ideal.studentlog.database.models.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

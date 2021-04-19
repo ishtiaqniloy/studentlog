@@ -1,8 +1,8 @@
-package com.dsi.studentlog.controllers;
+package com.ideal.studentlog.controllers;
 
-import com.dsi.studentlog.database.models.Student;
-import com.dsi.studentlog.helpers.dtos.StudentDTO;
-import com.dsi.studentlog.services.StudentService;
+import com.ideal.studentlog.database.models.Student;
+import com.ideal.studentlog.helpers.dtos.StudentDTO;
+import com.ideal.studentlog.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.dsi.studentlog;
+package com.ideal.studentlog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
