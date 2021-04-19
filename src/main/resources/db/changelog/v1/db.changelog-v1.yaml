@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: structure/create_students_table.yaml
+      relativeToChangelogFile: true
