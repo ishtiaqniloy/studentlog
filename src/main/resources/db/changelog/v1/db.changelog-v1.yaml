@@ -5,3 +5,6 @@ databaseChangeLog:
   - include:
       file: structure/create_teachers_table.yaml
       relativeToChangelogFile: true
+  - include:
+      file: structure/create_leave_applications_table.yaml
+      relativeToChangelogFile: true

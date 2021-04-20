@@ -1,0 +1,30 @@
+databaseChangeLog:
+  -  changeSet:
+       id: create_leave_applications_table_845c6
+       author: saif
+       changes:
+         -  createTable:
+              tableName: leave_applications
+              columns:
+                -  column:
+                     name: id
+                     type: int
+                     autoIncrement: true
+                     constraints:
+                       primaryKey: true
+                       nullable: false
+                - column:
+                    name: date_from
+                    type: date
+                    constraints:
+                      nullable: false
+                - column:
+                    name: date_to
+                    type: date
+                    constraints:
+                      nullable: false
+                - column:
+                    name: application_body
+                    type: varchar(1000)
+                    constraints:
+                      nullable: false
