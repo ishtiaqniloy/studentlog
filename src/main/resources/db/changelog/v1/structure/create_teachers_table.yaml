@@ -45,7 +45,7 @@ databaseChangeLog:
                       nullable: false
                 - column:
                     name: teacher_id
-                    type: varchar(30)
+                    type: varchar(20)
                     constraints:
                       nullable: false
                 - column:
