@@ -20,6 +20,9 @@ public class Admin {
     Integer id;
 
     @NonNull
+    String adminId;
+
+    @NonNull
     String name;
 
     @NonNull

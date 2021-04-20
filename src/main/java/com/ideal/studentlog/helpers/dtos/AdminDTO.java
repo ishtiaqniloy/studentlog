@@ -11,6 +11,9 @@ import java.util.Date;
 public class AdminDTO {
 
     @NonNull
+    String adminId;
+
+    @NonNull
     String name;
 
     @NonNull

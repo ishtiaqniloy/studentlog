@@ -19,6 +19,7 @@ public class AdminService {
 
     public void create(AdminDTO dto){
         Admin admin = new Admin();
+        admin.setAdminId(dto.getAdminId());
         admin.setName(dto.getName());
         admin.setDesignation(dto.getDesignation());
         admin.setDateOfBirth(dto.getDateOfBirth());
@@ -37,6 +38,7 @@ public class AdminService {
         Admin admin = adminRepository.findById(id).orElseThrow();
 
         return new AdminDTO(
+                admin.getAdminId(),
                 admin.getName(),
                 admin.getDesignation(),
                 admin.getDateOfBirth(),
@@ -53,6 +55,7 @@ public class AdminService {
     public void update(Integer id, AdminDTO dto){
         Admin admin = adminRepository.findById(id).orElseThrow();
 
+        admin.setAdminId(dto.getAdminId());
         admin.setName(dto.getName());
         admin.setDesignation(dto.getDesignation());
         admin.setDateOfBirth(dto.getDateOfBirth());
