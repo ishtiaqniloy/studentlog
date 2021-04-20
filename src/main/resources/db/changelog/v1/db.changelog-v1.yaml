@@ -3,6 +3,8 @@ databaseChangeLog:
       file: structure/create_students_table.yaml
       relativeToChangelogFile: true
   - include:
+      file: structure/create_student_applications_table.yaml
+      relativeToChangelogFile: true  - include:
       file: structure/create_teachers_table.yaml
       relativeToChangelogFile: true
   - include:
