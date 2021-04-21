@@ -116,7 +116,7 @@ public class StudentControllerTest {
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error", is("Not Found")))
-                .andExpect(jsonPath("$.code", is("404")))
+                .andExpect(jsonPath("$.code", is("API-404")))
                 .andExpect(jsonPath("$.message", is("Student not found with ID: 11")));
     }
 
