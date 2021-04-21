@@ -133,7 +133,7 @@ public class StudentControllerTest {
                 "Even Stranger Location",
                 "Test Student's Father",
                 "test.father@fakemail.com",
-                "0110120122398"
+                "01819101111"
         );
     }
 

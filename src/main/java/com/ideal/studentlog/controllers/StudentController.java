@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,12 +30,12 @@ public class StudentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StudentDTO create(@RequestBody StudentDTO dto) {
+    public StudentDTO create(@RequestBody @Valid StudentDTO dto) {
         return service.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public StudentDTO update(@PathVariable("id") Integer id, @RequestBody StudentDTO dto) throws ServiceException {
+    public StudentDTO update(@PathVariable("id") Integer id, @RequestBody @Valid StudentDTO dto) throws ServiceException {
         return service.update(id, dto);
     }
 
