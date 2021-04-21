@@ -21,10 +21,9 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Setup Environment Variables
+    - name: Build with Maven
       env:
         DB_URL: ${{ secrets.DB_URL }}
         DB_USER: ${{ secrets.DB_USER }}
         DB_PASS: ${{ secrets.DB_PASS }}
-    - name: Build with Maven
       run: mvn -B package --file pom.xml
