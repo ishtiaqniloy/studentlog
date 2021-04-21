@@ -2,6 +2,7 @@ package com.ideal.studentlog.controllers;
 
 import com.ideal.studentlog.database.models.Student;
 import com.ideal.studentlog.helpers.dtos.StudentDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,19 +23,19 @@ public class StudentController {
     }
 
     @GetMapping(path = "/{id}")
-    public StudentDTO getById(@PathVariable("id") Integer id) {
+    public StudentDTO getById(@PathVariable("id") Integer id) throws ServiceException {
         return service.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody StudentDTO dto) {
-        service.create(dto);
+    public StudentDTO create(@RequestBody StudentDTO dto) {
+        return service.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public void update(@PathVariable("id") Integer id, @RequestBody StudentDTO dto) {
-        service.update(id, dto);
+    public StudentDTO update(@PathVariable("id") Integer id, @RequestBody StudentDTO dto) throws ServiceException {
+        return service.update(id, dto);
     }
 
     @DeleteMapping(path = "/{id}")
