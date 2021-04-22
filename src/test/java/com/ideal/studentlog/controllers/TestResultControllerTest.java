@@ -37,7 +37,7 @@ public class TestResultControllerTest {
     private TestResultRepository repository;
 
     @Test
-    public void shouldReturnAvailableTests() throws Exception {
+    public void shouldReturnAvailableResults() throws Exception {
         mockMvc
                 .perform(get("/test-results"))
                 .andDo(print())
@@ -48,7 +48,7 @@ public class TestResultControllerTest {
     }
 
     @Test
-    public void shouldReturnTestById() throws Exception {
+    public void shouldReturnResultById() throws Exception {
         mockMvc
                 .perform(get("/test-results/11"))
                 .andDo(print())
@@ -58,8 +58,19 @@ public class TestResultControllerTest {
     }
 
     @Test
+    public void shouldReturnResultsByStudentId() throws Exception {
+        mockMvc
+                .perform(get("/test-results/student/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].testId", is(1)))
+                .andExpect(jsonPath("$[2].grade", containsString("B+")))
+                .andExpect(jsonPath("$", hasSize(10)));
+    }
+
+    @Test
     @Transactional
-    public void shouldCreateTest() throws Exception {
+    public void shouldCreateResult() throws Exception {
         mockMvc
                 .perform(
                         post("/test-results")
@@ -76,7 +87,7 @@ public class TestResultControllerTest {
 
     @Test
     @Transactional
-    public void shouldUpdateTest() throws Exception {
+    public void shouldUpdateResult() throws Exception {
         mockMvc
                 .perform(
                         patch("/test-results/4")
@@ -93,7 +104,7 @@ public class TestResultControllerTest {
 
     @Test
     @Transactional
-    public void shouldDeleteTest() throws Exception {
+    public void shouldDeleteResult() throws Exception {
         mockMvc
                 .perform(
                         delete("/test-results/5")
@@ -107,7 +118,7 @@ public class TestResultControllerTest {
     }
 
     @Test
-    public void shouldReturnNotFoundResponseForNonExistentTest() throws Exception {
+    public void shouldReturnNotFoundResponseForNonExistentResult() throws Exception {
         mockMvc
                 .perform(get("/test-results/38"))
                 .andDo(print())

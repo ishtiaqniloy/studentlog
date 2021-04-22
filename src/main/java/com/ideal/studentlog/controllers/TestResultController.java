@@ -22,6 +22,11 @@ public class TestResultController {
         return service.getAll();
     }
 
+    @GetMapping(path = "/student/{id}")
+    public List<TestResultDTO> getByStudentId(@PathVariable("id") Integer id) throws ServiceException {
+        return service.getByStudentId(id);
+    }
+
     @GetMapping(path = "/{id}")
     public TestResultDTO getById(@PathVariable("id") Integer id) throws ServiceException {
         return service.getById(id);

@@ -8,6 +8,7 @@ import com.ideal.studentlog.database.repositories.TestRepository;
 import com.ideal.studentlog.database.repositories.TestResultRepository;
 import com.ideal.studentlog.helpers.dtos.TestResultDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,11 +26,12 @@ public class TestResultService {
     private final StudentRepository studentRepository;
 
     public List<TestResultDTO> getAll() {
-        return repository
-                .findAll()
-                .stream()
-                .map(this::map)
-                .collect(Collectors.toList());
+        return map(repository.findAll());
+    }
+
+    public List<TestResultDTO> getByStudentId(Integer id) throws ServiceException {
+        getStudent(id);
+        return map(repository.findByStudentId(id));
     }
 
     public TestResultDTO getById(Integer id) throws ServiceException {
@@ -68,15 +70,26 @@ public class TestResultService {
                         "Test not found with ID: " + dto.getTestId(),
                         HttpStatus.NOT_FOUND
                 ));
-        Student student = studentRepository.findById(dto.getStudentId())
-                .orElseThrow(() -> new ServiceException(
-                        "Student not found with ID: " + dto.getStudentId(),
-                        HttpStatus.NOT_FOUND
-                ));
+        Student student = getStudent(dto.getStudentId());
 
         result.setTest(test);
         result.setStudent(student);
         result.setGrade(dto.getGrade());
+    }
+
+    private Student getStudent(@NonNull Integer id) throws ServiceException {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new ServiceException(
+                        "Student not found with ID: " + id,
+                        HttpStatus.NOT_FOUND
+                ));
+    }
+
+    private List<TestResultDTO> map(List<TestResult> results) {
+        return results
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
     }
 
     private TestResultDTO map(TestResult result) {
@@ -86,5 +99,4 @@ public class TestResultService {
                 result.getGrade()
         );
     }
-
 }
