@@ -15,12 +15,12 @@ databaseChangeLog:
                        nullable: false
                 -  column:
                      name: student_id
-                     type: varchar(100)
+                     type: int
                      constraints:
                        nullable: false
                 -  column:
                      name: teacher_id
-                     type: varchar(100)
+                     type: int
                      constraints:
                        nullable: false       
                 -  column:

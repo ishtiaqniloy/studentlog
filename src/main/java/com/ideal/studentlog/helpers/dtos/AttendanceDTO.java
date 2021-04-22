@@ -10,13 +10,13 @@ import java.util.Date;
 public class AttendanceDTO {
 
     @NonNull
-    String studentId;
-
-    @NonNull
-    String teacherId;
-
-    @NonNull
     Date date;
+
+    @NonNull
+    Integer studentId;
+
+    @NonNull
+    Integer teacherId;
 
     @NonNull
     Boolean isPresent;

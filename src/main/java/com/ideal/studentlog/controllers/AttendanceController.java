@@ -2,11 +2,13 @@ package com.ideal.studentlog.controllers;
 
 import com.ideal.studentlog.database.models.Attendance;
 import com.ideal.studentlog.helpers.dtos.AttendanceDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,18 +24,18 @@ public class AttendanceController {
     }
 
     @GetMapping(path = "/{id}")
-    public AttendanceDTO getById(@PathVariable("id") Integer id) {
+    public AttendanceDTO getById(@PathVariable("id") Integer id) throws ServiceException {
         return service.getById(id);
     }
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody AttendanceDTO dto) {
-        service.create(dto);
+    public AttendanceDTO create(@RequestBody @Valid AttendanceDTO dto) {
+        return service.create(dto);
     }
     
     @PatchMapping(path = "/{id}")
-    public void update(@PathVariable("id") Integer id,  @RequestBody AttendanceDTO dto) {
+    public void update(@PathVariable("id") Integer id,  @RequestBody @Valid AttendanceDTO dto) throws ServiceException {
         service.update(id, dto);
     }
     
