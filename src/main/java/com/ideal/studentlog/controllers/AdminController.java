@@ -2,11 +2,13 @@ package com.ideal.studentlog.controllers;
 
 import com.ideal.studentlog.database.models.Admin;
 import com.ideal.studentlog.helpers.dtos.AdminDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,19 +23,19 @@ public class AdminController {
     }
 
     @GetMapping(path = "/{id}")
-    public AdminDTO getById(@PathVariable("id") Integer id){
+    public AdminDTO getById(@PathVariable("id") Integer id) throws ServiceException {
         return adminService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody AdminDTO dto){
-        adminService.create(dto);
+    public AdminDTO create(@RequestBody @Valid AdminDTO dto){
+        return adminService.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public void update(@PathVariable("id") Integer id, @RequestBody AdminDTO dto){
-        adminService.update(id, dto);
+    public AdminDTO update(@PathVariable("id") Integer id, @RequestBody @Valid AdminDTO dto) throws ServiceException{
+        return adminService.update(id, dto);
     }
 
     @DeleteMapping(path = "/{id}")

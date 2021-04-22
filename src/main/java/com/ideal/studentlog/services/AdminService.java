@@ -1,9 +1,12 @@
 package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.Admin;
+import com.ideal.studentlog.database.models.Student;
 import com.ideal.studentlog.database.repositories.AdminRepository;
 import com.ideal.studentlog.helpers.dtos.AdminDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +20,36 @@ public class AdminService {
         return adminRepository.findAll();
     }
 
-    public void create(AdminDTO dto){
+    public AdminDTO create(AdminDTO dto){
         Admin admin = new Admin();
+        map(dto, admin);
+
+        return map(adminRepository.save(admin));
+    }
+
+    public AdminDTO getById(Integer id) throws ServiceException{
+        return map(getAdmin(id));
+    }
+
+    public AdminDTO update(Integer id, AdminDTO dto) throws ServiceException{
+        Admin admin = getAdmin(id);
+        map(dto, admin);
+
+        return map(adminRepository.save(admin));
+    }
+
+    public void delete(Integer id){
+        adminRepository.deleteById(id);
+    }
+
+    private Admin getAdmin(Integer id) throws ServiceException {
+        return adminRepository.findById(id).orElseThrow(() -> new ServiceException(
+                "Admin not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
+    }
+
+    private void map(AdminDTO dto, Admin admin){
         admin.setAdminId(dto.getAdminId());
         admin.setName(dto.getName());
         admin.setDesignation(dto.getDesignation());
@@ -30,13 +61,9 @@ public class AdminService {
         admin.setContactNumber(dto.getContactNumber());
         admin.setPresentAddress(dto.getPresentAddress());
         admin.setPermanentAddress(dto.getPermanentAddress());
-
-        adminRepository.save(admin);
     }
 
-    public AdminDTO getById(Integer id){
-        Admin admin = adminRepository.findById(id).orElseThrow();
-
+    private AdminDTO map(Admin admin){
         return new AdminDTO(
                 admin.getAdminId(),
                 admin.getName(),
@@ -50,27 +77,5 @@ public class AdminService {
                 admin.getPresentAddress(),
                 admin.getPermanentAddress()
         );
-    }
-
-    public void update(Integer id, AdminDTO dto){
-        Admin admin = adminRepository.findById(id).orElseThrow();
-
-        admin.setAdminId(dto.getAdminId());
-        admin.setName(dto.getName());
-        admin.setDesignation(dto.getDesignation());
-        admin.setDateOfBirth(dto.getDateOfBirth());
-        admin.setBloodGroup(dto.getBloodGroup());
-        admin.setHighestEducationLevel(dto.getHighestEducationLevel());
-        admin.setJoiningDate(dto.getJoiningDate());
-        admin.setResignationDate(dto.getResignationDate());
-        admin.setContactNumber(dto.getContactNumber());
-        admin.setPresentAddress(dto.getPresentAddress());
-        admin.setPermanentAddress(dto.getPermanentAddress());
-
-        adminRepository.save(admin);
-    }
-
-    public void delete(Integer id){
-        adminRepository.deleteById(id);
     }
 }
