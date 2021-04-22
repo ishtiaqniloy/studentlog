@@ -1,0 +1,9 @@
+databaseChangeLog:
+  -  changeSet:
+       id: add_admins_data_2
+       author: lubna
+       changes:
+         - loadData:
+             file: csv/admins.csv
+             relativeToChangelogFile: true
+             tableName: admin
