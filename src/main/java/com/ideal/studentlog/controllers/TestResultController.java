@@ -1,8 +1,8 @@
 package com.ideal.studentlog.controllers;
 
-import com.ideal.studentlog.helpers.dtos.StudentDTO;
+import com.ideal.studentlog.helpers.dtos.TestResultDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
-import com.ideal.studentlog.services.StudentService;
+import com.ideal.studentlog.services.TestResultService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,30 +11,30 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/students")
+@RequestMapping(path = "/test-results")
 @RequiredArgsConstructor
-public class StudentController {
+public class TestResultController {
 
-    private final StudentService service;
+    private final TestResultService service;
 
     @GetMapping
-    public List<StudentDTO> getAll() {
+    public List<TestResultDTO> getAll() {
         return service.getAll();
     }
 
     @GetMapping(path = "/{id}")
-    public StudentDTO getById(@PathVariable("id") Integer id) throws ServiceException {
+    public TestResultDTO getById(@PathVariable("id") Integer id) throws ServiceException {
         return service.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StudentDTO create(@RequestBody @Valid StudentDTO dto) {
+    public TestResultDTO create(@RequestBody @Valid TestResultDTO dto) throws ServiceException {
         return service.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public StudentDTO update(@PathVariable("id") Integer id, @RequestBody @Valid StudentDTO dto) throws ServiceException {
+    public TestResultDTO update(@PathVariable("id") Integer id, @RequestBody @Valid TestResultDTO dto) throws ServiceException {
         return service.update(id, dto);
     }
 

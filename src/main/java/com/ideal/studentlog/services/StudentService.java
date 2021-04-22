@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +18,12 @@ public class StudentService {
 
     private final StudentRepository repository;
 
-    public List<Student> getAll() {
-        return repository.findAll();
+    public List<StudentDTO> getAll() {
+        return repository
+                .findAll()
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
     }
 
     public StudentDTO getById(Integer id) throws ServiceException {

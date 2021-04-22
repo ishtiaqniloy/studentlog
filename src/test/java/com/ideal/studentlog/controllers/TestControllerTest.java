@@ -1,8 +1,8 @@
 package com.ideal.studentlog.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ideal.studentlog.database.repositories.StudentRepository;
-import com.ideal.studentlog.helpers.dtos.StudentDTO;
+import com.ideal.studentlog.database.repositories.TestRepository;
+import com.ideal.studentlog.helpers.dtos.TestDTO;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -17,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StudentControllerTest {
+public class TestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,103 +36,96 @@ public class StudentControllerTest {
     private ObjectMapper mapper;
 
     @Autowired
-    private StudentRepository repository;
+    private TestRepository repository;
 
     @Test
-    public void shouldReturnAvailableStudents() throws Exception {
+    public void shouldReturnAvailableTests() throws Exception {
         mockMvc
-                .perform(get("/students"))
+                .perform(get("/tests"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("MD SHOEB AL AFNAN")))
-                .andExpect(jsonPath("$[1].bloodGroup", is("A+")))
-                .andExpect(jsonPath("$", hasSize(10)));
+                .andExpect(jsonPath("$[0].subject", is("Bengali")))
+                .andExpect(jsonPath("$[1].examiner", is("FAHMIDA TASNIM")))
+                .andExpect(jsonPath("$", hasSize(24)));
     }
 
     @Test
-    public void shouldReturnStudentGetById() throws Exception {
+    public void shouldReturnTestById() throws Exception {
         mockMvc
-                .perform(get("/students/3"))
+                .perform(get("/tests/3"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("AYMAN RAHMAN")))
-                .andExpect(jsonPath("$.presentAddress", is("Kolabagan, Dhaka")));
+                .andExpect(jsonPath("$.subject", is("Mathematics")))
+                .andExpect(jsonPath("$.date", containsString("2005-03-13")));
     }
 
     @Test
     @Transactional
-    public void shouldCreateStudent() throws Exception {
+    public void shouldCreateTest() throws Exception {
         mockMvc
                 .perform(
-                        post("/students")
+                        post("/tests")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is("Test Student")))
-                .andExpect(jsonPath("$.studentId", is("student-001")));
+                .andExpect(jsonPath("$.subject", is("Agricultural Science")))
+                .andExpect(jsonPath("$.examiner", is("ARGHA PROTIM ANGON")));
 
-        assertEquals(repository.count(), 11);
+        assertEquals(repository.count(), 25);
     }
 
     @Test
     @Transactional
-    public void shouldUpdateStudent() throws Exception {
+    public void shouldUpdateTest() throws Exception {
         mockMvc
                 .perform(
-                        patch("/students/4")
+                        patch("/tests/4")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Test Student")))
-                .andExpect(jsonPath("$.studentId", is("student-001")));
+                .andExpect(jsonPath("$.subject", is("Agricultural Science")))
+                .andExpect(jsonPath("$.examiner", is("ARGHA PROTIM ANGON")));
 
-        assertEquals(repository.count(), 10);
+        assertEquals(repository.count(), 24);
     }
 
     @Test
     @Transactional
-    public void shouldDeleteStudent() throws Exception {
+    public void shouldDeleteTest() throws Exception {
         mockMvc
                 .perform(
-                        delete("/students/10")
+                        delete("/tests/24")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertEquals(repository.count(), 9);
+        assertEquals(repository.count(), 23);
     }
 
     @Test
-    public void shouldReturnNotFoundResponseForNonExistentStudent() throws Exception {
+    public void shouldReturnNotFoundResponseForNonExistentTest() throws Exception {
         mockMvc
-                .perform(get("/students/11"))
+                .perform(get("/tests/25"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error", is("Not Found")))
                 .andExpect(jsonPath("$.code", is("API-404")))
-                .andExpect(jsonPath("$.message", is("Student not found with ID: 11")));
+                .andExpect(jsonPath("$.message", is("Test not found with ID: 25")));
     }
 
     @NotNull
     @Contract(" -> new")
-    private StudentDTO getDto() {
-        return new StudentDTO(
-                "Test Student",
-                "b:reg-001",
-                "student-001",
-                new Date(),
-                "A+",
-                "Strange Location",
-                "Even Stranger Location",
-                "Test Student's Father",
-                "test.father@fakemail.com",
-                "01819101111"
+    private TestDTO getDto() {
+        return new TestDTO(
+                "Agricultural Science",
+                "ARGHA PROTIM ANGON",
+                new Date()
         );
     }
 

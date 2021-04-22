@@ -1,9 +1,0 @@
-databaseChangeLog:
-  -  changeSet:
-       id: add_students_data_319b2
-       author: ishmum
-       changes:
-         - loadData:
-             file: csv/students.csv
-             relativeToChangelogFile: true
-             tableName: student
