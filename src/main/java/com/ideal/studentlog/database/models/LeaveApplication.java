@@ -25,12 +25,11 @@ public class LeaveApplication {
 
     @NonNull
     @ManyToOne
-    Student studentID;
+    Student student;
 
     @NonNull
     String applicationBody;
 
-    @NonNull
     @ManyToOne
     Teacher approvedBy;
 }

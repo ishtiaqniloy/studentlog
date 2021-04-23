@@ -2,7 +2,7 @@ package com.ideal.studentlog.helpers.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.lang.NonNull;
+import lombok.NonNull;
 
 import java.util.Date;
 
@@ -10,39 +10,39 @@ import java.util.Date;
 @AllArgsConstructor
 public class TeacherDTO {
 
-    @NonNull
+    @lombok.NonNull
     String name;
 
-    @NonNull
+    @lombok.NonNull
     Date dateOfBirth;
 
-    @NonNull
+    @lombok.NonNull
     Date joiningDate;
 
-    @NonNull
+    @lombok.NonNull
     Date resignationDate;
 
-    @NonNull
+    @lombok.NonNull
     String highestEducationLevel;
 
-    @NonNull
+    @lombok.NonNull
     String nationalRegistrationNo;
 
-    @NonNull
+    @lombok.NonNull
     String teacherId;
 
-    @NonNull
+    @lombok.NonNull
     String designation;
 
-    @NonNull
+    @lombok.NonNull
     String contactNo;
 
-    @NonNull
+    @lombok.NonNull
     String presentAddress;
 
-    @NonNull
+    @lombok.NonNull
     String permanentAddress;
 
-    @NonNull
+    @lombok.NonNull
     String bloodGroup;
 }

@@ -2,6 +2,8 @@ package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.LeaveApplication;
 import com.ideal.studentlog.database.repositories.LeaveApplicationRepository;
+import com.ideal.studentlog.database.repositories.StudentRepository;
+import com.ideal.studentlog.database.repositories.TeacherRepository;
 import com.ideal.studentlog.helpers.dtos.LeaveApplicationDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import java.util.List;
 public class LeaveApplicationService {
 
     private final LeaveApplicationRepository repository;
+    private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
 
     public List<LeaveApplication> getAll() {
         return repository.findAll();
@@ -20,24 +24,24 @@ public class LeaveApplicationService {
 
     public void create(LeaveApplicationDTO dto) {
         LeaveApplication leaveApplication = new LeaveApplication();
-        dtoToLeaveApplication(dto, leaveApplication);
+        map(dto, leaveApplication);
     }
 
     public void update(Integer id, LeaveApplicationDTO dto) {
         LeaveApplication leaveApplication = repository.findById(id).orElseThrow();
-        dtoToLeaveApplication(dto, leaveApplication);
+        map(dto, leaveApplication);
     }
 
     public void delete(Integer id) {
         repository.deleteById(id);
     }
 
-    private void dtoToLeaveApplication(LeaveApplicationDTO dto, LeaveApplication leaveApplication) {
+    private void map(LeaveApplicationDTO dto, LeaveApplication leaveApplication) {
         leaveApplication.setDateFrom(dto.getDateFrom());
         leaveApplication.setDateTo(dto.getDateTo());
-        leaveApplication.setStudentID(dto.getStudentID());
+        leaveApplication.setStudent(studentRepository.findById(dto.getStudentId()).orElseThrow());
         leaveApplication.setApplicationBody(dto.getApplicationBody());
-        leaveApplication.setApprovedBy(dto.getApprovedBy());
+        leaveApplication.setApprovedBy(teacherRepository.findById(dto.getApprovedById()).orElseThrow());
 
         repository.save(leaveApplication);
     }
@@ -48,9 +52,9 @@ public class LeaveApplicationService {
         return new LeaveApplicationDTO(
                 leaveApplication.getDateFrom(),
                 leaveApplication.getDateTo(),
-                leaveApplication.getStudentID(),
+                leaveApplication.getStudent().getId(),
                 leaveApplication.getApplicationBody(),
-                leaveApplication.getApprovedBy()
+                leaveApplication.getApprovedBy().getId()
         );
     }
 }
