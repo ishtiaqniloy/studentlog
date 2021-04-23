@@ -128,6 +128,27 @@ public class TestResultControllerTest {
                 .andExpect(jsonPath("$.message", is("Test Result not found with ID: 38")));
     }
 
+    @Test
+    public void shouldReturnBadRequestResponseWhenCreatingStudentWithInvalidId() throws Exception {
+        TestResultDTO dto = getDto();
+
+        dto.setStudentId(100);
+
+        mockMvc
+                .perform(
+                        post("/test-results")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(dto))
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("Bad Request")))
+                .andExpect(jsonPath("$.code", is("API-400")))
+                .andExpect(jsonPath("$.message", is("[Invalid value for field studentId: 100]")));
+
+        assertEquals(repository.count(), 37);
+    }
+
     @NotNull
     @Contract(" -> new")
     private TestResultDTO getDto() {
