@@ -1,0 +1,36 @@
+databaseChangeLog:
+  -  changeSet:
+       id: create_attendances_table_845c6
+       author: shuhin
+       changes:
+         -  createTable:
+              tableName: attendance
+              columns:
+                -  column:
+                     name: id
+                     type: int
+                     autoIncrement: true
+                     constraints:
+                       primaryKey: true
+                       nullable: false
+                -  column:
+                     name: student_id
+                     type: varchar(100)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name: teacher_id
+                     type: varchar(100)
+                     constraints:
+                       nullable: false       
+                -  column:
+                     name: date
+                     type: date
+                     constraints:
+                       nullable: false
+                -  column:
+                     name: is_present
+                     type: boolean
+                     constraints:
+                       nullable: false
+

@@ -1,0 +1,79 @@
+databaseChangeLog:
+  -  changeSet:
+       id: create_student_applications_table_921d2
+       author: ishtiaq
+       changes:
+         -  createTable:
+              tableName: student_application
+              columns:
+                -  column:
+                     name: id
+                     type: int
+                     autoIncrement: true
+                     constraints:
+                       primaryKey: true
+                       nullable: false
+                -  column:
+                     name: applied_date
+                     type: date
+                     constraints:
+                       nullable: false
+                -  column:
+                     name: approved_by
+                     type: varchar(100)
+                     constraints:
+                       nullable: false
+                - column:
+                    name: name
+                    type: varchar(100)
+                    constraints:
+                      nullable: false
+                - column:
+                    name: date_of_birth
+                    type: date
+                    constraints:
+                      nullable: false
+                - column:
+                    name: blood_group
+                    type: varchar(5)
+                    constraints:
+                      nullable: false
+                - column:
+                    name: birth_registration_id
+                    type: varchar(30)
+                    constraints:
+                      nullable: false
+                -  column:
+                     name: registration_id
+                     type: varchar(100)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name: present_address
+                     type: varchar(255)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name: permanent_address
+                     type: varchar(255)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name: guardian_name
+                     type: varchar(100)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name: guardian_email
+                     type: varchar(100)
+                -  column:
+                     name: guardian_phone
+                     type: varchar(20)
+                     constraints:
+                       nullable: false
+                -  column:
+                     name: applied_for_grade
+                     type: varchar(20)
+                     constraints:
+                       nullable: false
+
