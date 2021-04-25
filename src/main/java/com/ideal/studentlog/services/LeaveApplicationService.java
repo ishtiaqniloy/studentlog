@@ -1,14 +1,20 @@
 package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.LeaveApplication;
+import com.ideal.studentlog.database.models.Student;
+import com.ideal.studentlog.database.models.Teacher;
 import com.ideal.studentlog.database.repositories.LeaveApplicationRepository;
 import com.ideal.studentlog.database.repositories.StudentRepository;
 import com.ideal.studentlog.database.repositories.TeacherRepository;
 import com.ideal.studentlog.helpers.dtos.LeaveApplicationDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,37 +24,67 @@ public class LeaveApplicationService {
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
 
-    public List<LeaveApplication> getAll() {
-        return repository.findAll();
+    public List<LeaveApplicationDTO> getAll() {
+        return repository
+                .findAll()
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
     }
 
-    public void create(LeaveApplicationDTO dto) {
+    public LeaveApplicationDTO getById(Integer id) throws ServiceException {
+        return map(getLeaveApplication(id));
+    }
+
+    @Transactional
+    public LeaveApplicationDTO create(LeaveApplicationDTO dto) throws ServiceException {
         LeaveApplication leaveApplication = new LeaveApplication();
         map(dto, leaveApplication);
+        return map(repository.save(leaveApplication));
     }
 
-    public void update(Integer id, LeaveApplicationDTO dto) {
-        LeaveApplication leaveApplication = repository.findById(id).orElseThrow();
+    @Transactional
+    public LeaveApplicationDTO update(Integer id, LeaveApplicationDTO dto) throws ServiceException {
+        LeaveApplication leaveApplication = getLeaveApplication(id);
         map(dto, leaveApplication);
+        return map(repository.save(leaveApplication));
     }
 
+    @Transactional
     public void delete(Integer id) {
         repository.deleteById(id);
     }
 
-    private void map(LeaveApplicationDTO dto, LeaveApplication leaveApplication) {
-        leaveApplication.setDateFrom(dto.getDateFrom());
-        leaveApplication.setDateTo(dto.getDateTo());
-        leaveApplication.setStudent(studentRepository.findById(dto.getStudentId()).orElseThrow());
-        leaveApplication.setApplicationBody(dto.getApplicationBody());
-        leaveApplication.setApprovedBy(teacherRepository.findById(dto.getApprovedById()).orElseThrow());
-
-        repository.save(leaveApplication);
+    public LeaveApplication getLeaveApplication(Integer id) throws ServiceException {
+        return repository.findById(id).orElseThrow(() -> new ServiceException(
+                "Leave Application not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
     }
 
-    public LeaveApplicationDTO getById(Integer id) {
-        LeaveApplication leaveApplication = repository.findById(id).orElseThrow();
+    private Teacher getTeacher(Integer id) throws ServiceException {
+        return teacherRepository.findById(id).orElseThrow(() -> new ServiceException(
+                "Teacher not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
+    }
 
+    private Student getStudent(Integer id) throws ServiceException {
+        return studentRepository.findById(id).orElseThrow(() -> new ServiceException(
+                "Student not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
+    }
+
+    private void map(LeaveApplicationDTO dto, LeaveApplication leaveApplication) throws ServiceException {
+        leaveApplication.setDateFrom(dto.getDateFrom());
+        leaveApplication.setDateTo(dto.getDateTo());
+        leaveApplication.setStudent(getStudent(dto.getStudentId()));
+        leaveApplication.setApplicationBody(dto.getApplicationBody());
+        leaveApplication.setApprovedBy(getTeacher(dto.getApprovedById()));
+    }
+
+    private LeaveApplicationDTO map(LeaveApplication leaveApplication) {
         return new LeaveApplicationDTO(
                 leaveApplication.getDateFrom(),
                 leaveApplication.getDateTo(),

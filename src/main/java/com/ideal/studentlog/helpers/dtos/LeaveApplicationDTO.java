@@ -6,22 +6,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 public class LeaveApplicationDTO {
 
-    @lombok.NonNull
+    @NonNull
     Date dateFrom;
 
-    @lombok.NonNull
+    @NonNull
     Date dateTo;
 
-    @lombok.NonNull
+    @NonNull
     Integer studentId;
 
-    @lombok.NonNull
+    @NonNull
+    @Size(max = 1000)
     String applicationBody;
 
     Integer approvedById;

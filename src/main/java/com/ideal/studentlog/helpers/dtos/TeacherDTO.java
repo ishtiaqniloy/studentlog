@@ -4,45 +4,54 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 public class TeacherDTO {
 
-    @lombok.NonNull
+    @NonNull
+    @Size(min = 5, max = 50)
     String name;
 
-    @lombok.NonNull
+    @NonNull
     Date dateOfBirth;
 
-    @lombok.NonNull
+    @NonNull
     Date joiningDate;
 
-    @lombok.NonNull
+    @NonNull
     Date resignationDate;
 
-    @lombok.NonNull
+    @NonNull
     String highestEducationLevel;
 
-    @lombok.NonNull
+    @NonNull
+    @Size(min = 8, max = 20)
     String nationalRegistrationNo;
 
-    @lombok.NonNull
+    @NonNull
+    @Size(min = 4, max = 20)
     String teacherId;
 
-    @lombok.NonNull
+    @NonNull
+    @Size(max = 30)
     String designation;
 
-    @lombok.NonNull
+    @NonNull
     String contactNo;
 
-    @lombok.NonNull
+    @NonNull
+    @Size(max = 100)
     String presentAddress;
 
-    @lombok.NonNull
+    @NonNull
+    @Size(max = 100)
     String permanentAddress;
 
-    @lombok.NonNull
+    @NonNull
+    @Pattern(regexp = "^(A|B|AB|O)[+-]$")
     String bloodGroup;
 }
