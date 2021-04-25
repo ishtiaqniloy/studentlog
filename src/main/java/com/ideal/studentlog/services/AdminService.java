@@ -1,7 +1,6 @@
 package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.Admin;
-import com.ideal.studentlog.database.models.Student;
 import com.ideal.studentlog.database.repositories.AdminRepository;
 import com.ideal.studentlog.helpers.dtos.AdminDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
@@ -10,14 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AdminService {
     private final AdminRepository adminRepository;
 
-    public List<Admin> getAll(){
-        return adminRepository.findAll();
+    public List<AdminDTO> getAll(){
+        return adminRepository
+                .findAll()
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
     }
 
     public AdminDTO create(AdminDTO dto){

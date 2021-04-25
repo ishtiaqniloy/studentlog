@@ -1,6 +1,5 @@
 package com.ideal.studentlog.controllers;
 
-import com.ideal.studentlog.database.models.Admin;
 import com.ideal.studentlog.helpers.dtos.AdminDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.AdminService;
@@ -18,7 +17,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @GetMapping
-    public List<Admin> getAll(){
+    public List<AdminDTO> getAll(){
         return adminService.getAll();
     }
 
