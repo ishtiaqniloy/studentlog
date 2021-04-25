@@ -19,7 +19,7 @@ public class AttendanceController {
     private final AttendanceService service;
 
     @GetMapping
-    public List<Attendance> getAll() {
+    public List<AttendanceDTO> getAll() {
         return service.getAll();
     }
 
