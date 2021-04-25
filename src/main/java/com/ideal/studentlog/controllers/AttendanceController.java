@@ -1,6 +1,5 @@
 package com.ideal.studentlog.controllers;
 
-import com.ideal.studentlog.database.models.Attendance;
 import com.ideal.studentlog.helpers.dtos.AttendanceDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.AttendanceService;
@@ -30,7 +29,7 @@ public class AttendanceController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AttendanceDTO create(@RequestBody @Valid AttendanceDTO dto) {
+    public AttendanceDTO create(@RequestBody @Valid AttendanceDTO dto) throws ServiceException{
         return service.create(dto);
     }
     
