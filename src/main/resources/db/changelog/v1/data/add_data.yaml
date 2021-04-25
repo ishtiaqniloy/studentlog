@@ -15,3 +15,7 @@ databaseChangeLog:
              file: csv/test_results.csv
              relativeToChangelogFile: true
              tableName: test_results
+         - loadData:
+             file: csv/subjects.csv
+             relativeToChangelogFile: true
+             tableName: subject
