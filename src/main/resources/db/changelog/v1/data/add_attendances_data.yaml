@@ -1,9 +1,0 @@
-databaseChangeLog:
-  -  changeSet:
-       id: add_attendances_data_1
-       author: shuhin
-       changes:
-         - loadData:
-             file: csv/attendances.csv
-             relativeToChangelogFile: true
-             tableName: attendance
