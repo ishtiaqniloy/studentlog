@@ -1,5 +1,6 @@
 package com.ideal.studentlog.helpers.dtos;
 
+import com.ideal.studentlog.helpers.validators.annotations.ValidStudentId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -13,6 +14,7 @@ public class AttendanceDTO {
     Date date;
 
     @NonNull
+    @ValidStudentId
     Integer studentId;
 
     @NonNull

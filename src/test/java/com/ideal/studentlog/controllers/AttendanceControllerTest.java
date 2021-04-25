@@ -55,7 +55,7 @@ public class AttendanceControllerTest {
                 .perform(get("/attendance/3"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                //.andExpect(jsonPath("$.date", contains("2021-04-23")))
+                .andExpect(jsonPath("$.date", containsString("2021-04-23")))
                 .andExpect(jsonPath("$.studentId", is(3)))
                 .andExpect(jsonPath("$.teacherId", is(1))) ;
     }
@@ -71,7 +71,7 @@ public class AttendanceControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.studentId", is(11)))
+                .andExpect(jsonPath("$.studentId", is(10)))
                 .andExpect(jsonPath("$.teacherId", is(2)));
 
 
@@ -89,7 +89,7 @@ public class AttendanceControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.studentId", is(11)))
+                .andExpect(jsonPath("$.studentId", is(10)))
                 .andExpect(jsonPath("$.teacherId", is(2)));
 
         assertEquals(repository.count(), 10);
@@ -126,7 +126,7 @@ public class AttendanceControllerTest {
     private AttendanceDTO getDto() {
         return new AttendanceDTO(
                 new Date(),
-                11,
+                10,
                 2,
                 true
         );

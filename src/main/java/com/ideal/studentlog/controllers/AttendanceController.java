@@ -35,8 +35,8 @@ public class AttendanceController {
     }
     
     @PatchMapping(path = "/{id}")
-    public void update(@PathVariable("id") Integer id,  @RequestBody @Valid AttendanceDTO dto) throws ServiceException {
-        service.update(id, dto);
+    public AttendanceDTO update(@PathVariable("id") Integer id,  @RequestBody @Valid AttendanceDTO dto) throws ServiceException {
+        return service.update(id, dto);
     }
     
     @DeleteMapping(path="/{id}")
