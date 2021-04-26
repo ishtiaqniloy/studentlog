@@ -25,6 +25,9 @@ databaseChangeLog:
       file: structure/create_test_results_table.yaml
       relativeToChangelogFile: true
   - include:
-      file: data/add_data.yaml
+      file: structure/create_subject_details_table.yaml
       relativeToChangelogFile: true
 
+  - include:
+      file: data/add_data.yaml
+      relativeToChangelogFile: true
