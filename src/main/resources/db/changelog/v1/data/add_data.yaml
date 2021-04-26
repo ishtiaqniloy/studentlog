@@ -19,3 +19,15 @@ databaseChangeLog:
              file: csv/subjects.csv
              relativeToChangelogFile: true
              tableName: subject
+         - loadData:
+             file: csv/subject_details.csv
+             relativeToChangelogFile: true
+             tableName: subject_details
+         - loadData:
+             file: csv/attendances.csv
+             relativeToChangelogFile: true
+             tableName: attendance
+         - loadData:
+             file: csv/admins.csv
+             relativeToChangelogFile: true
+             tableName: admin
