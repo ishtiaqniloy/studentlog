@@ -1,6 +1,6 @@
 databaseChangeLog:
   -  changeSet:
-       id: create_attendances_table_845c6
+       id: create_attendances_table_254b6
        author: shuhin
        changes:
          -  createTable:
@@ -15,17 +15,19 @@ databaseChangeLog:
                        nullable: false
                 -  column:
                      name: student_id
-                     type: varchar(100)
+                     type: int
+                     constraints:
+                       nullable: false
+                       foreignKeyName: fk_attendance_student
+                       references: student(id)
+                -  column:
+                     name: teacher_id
+                     type: int
                      constraints:
                        nullable: false
                 -  column:
-                     name: teacher_id
-                     type: varchar(100)
-                     constraints:
-                       nullable: false       
-                -  column:
                      name: date
-                     type: date
+                     type: dateTime
                      constraints:
                        nullable: false
                 -  column:
@@ -33,4 +35,3 @@ databaseChangeLog:
                      type: boolean
                      constraints:
                        nullable: false
-
