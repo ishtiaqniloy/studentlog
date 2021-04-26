@@ -4,27 +4,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
 @Entity
-public class Attendance {
+public class SubjectDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @NonNull
-    Date date;
-
-    @NonNull
-    @ManyToOne
-    Student student;
+    Integer subjectId;
 
     @NonNull
     Integer teacherId;
 
     @NonNull
-    Boolean isPresent;
+    Integer classDetailsId;
 }

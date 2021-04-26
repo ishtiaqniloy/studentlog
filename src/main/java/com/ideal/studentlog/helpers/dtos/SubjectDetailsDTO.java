@@ -1,20 +1,21 @@
 package com.ideal.studentlog.helpers.dtos;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
-import javax.validation.constraints.Size;
-
 @Data
 @AllArgsConstructor
-public class SubjectDTO {
+public class SubjectDetailsDTO {
+    
+    @NonNull
+    Integer subjectId;
 
     @NonNull
-    @Size(min = 5, max = 50)
-    String name;
+    Integer teacherId;
 
     @NonNull
-    @Size(min = 5, max = 50)
-    String category;
+    Integer classDetailsId;
+
 }
