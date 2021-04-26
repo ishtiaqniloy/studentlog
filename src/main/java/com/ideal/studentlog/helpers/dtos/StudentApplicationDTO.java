@@ -14,8 +14,7 @@ public class StudentApplicationDTO implements Serializable {
     @NonNull
     Date appliedDate;
 
-    @NonNull
-    String approvedBy;
+    Integer approvedBy;
 
     @NonNull
     String name;
