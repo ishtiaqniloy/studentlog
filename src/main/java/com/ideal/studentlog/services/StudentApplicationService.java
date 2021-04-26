@@ -1,23 +1,28 @@
 package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.StudentApplication;
+import com.ideal.studentlog.database.repositories.AdminRepository;
 import com.ideal.studentlog.database.repositories.StudentApplicationRepository;
 import com.ideal.studentlog.helpers.dtos.StudentApplicationDTO;
+import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StudentApplicationService {
     private final StudentApplicationRepository repository;
+    private final AdminRepository adminRepository;
 
     //Todo: introduce model mapper
-    public StudentApplicationDTO model2dto(StudentApplication studentApplication){
+    public StudentApplicationDTO map(StudentApplication studentApplication){
         return new StudentApplicationDTO(
                 studentApplication.getAppliedDate(),
-                studentApplication.getApprovedBy(),
+                studentApplication.getApprovedBy().getId(),
                 studentApplication.getName(),
                 studentApplication.getDateOfBirth(),
                 studentApplication.getBloodGroup(),
@@ -32,9 +37,14 @@ public class StudentApplicationService {
         );
     }
 
-    public StudentApplication dto2model(StudentApplication studentApplication, StudentApplicationDTO dto){
+    public void map(StudentApplication studentApplication, StudentApplicationDTO dto) throws ServiceException {
         studentApplication.setAppliedDate(dto.getAppliedDate());
-        studentApplication.setApprovedBy(dto.getApprovedBy());
+        studentApplication.setApprovedBy(adminRepository.findById(dto.getApprovedBy()).orElseThrow(
+                () -> new ServiceException(
+                        "Admin not found with ID: " + dto.getApprovedBy(),
+                        HttpStatus.NOT_FOUND
+                )
+        ));
         studentApplication.setName(dto.getName());
         studentApplication.setDateOfBirth(dto.getDateOfBirth());
         studentApplication.setBloodGroup(dto.getBloodGroup());
@@ -46,34 +56,45 @@ public class StudentApplicationService {
         studentApplication.setGuardianEmail(dto.getGuardianEmail());
         studentApplication.setGuardianPhone(dto.getGuardianPhone());
         studentApplication.setAppliedForGrade(dto.getAppliedForGrade());
-
-        return studentApplication;
     }
 
-    public StudentApplication createModelWithDTO(StudentApplicationDTO dto){
+    public List<StudentApplicationDTO> map(List<StudentApplication> studentApplications){
+        return studentApplications
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
+    }
+
+    public StudentApplication createModelWithDTO(StudentApplicationDTO dto) throws ServiceException {
         StudentApplication studentApplication = new StudentApplication();
-        studentApplication = dto2model(studentApplication, dto);
+        map(studentApplication, dto);
         return studentApplication;
     }
 
-    public List<StudentApplication> getAll() {
-        return repository.findAll();
+    public List<StudentApplicationDTO> getAll() {
+        return map(repository.findAll());
     }
 
-    public void create(StudentApplicationDTO dto) {
+    public StudentApplicationDTO create(StudentApplicationDTO dto) throws ServiceException {
         StudentApplication studentApplication = createModelWithDTO(dto);
-        repository.save(studentApplication);
+        return map(repository.save(studentApplication));
     }
 
-    public StudentApplicationDTO getById(Integer id) {
-        StudentApplication studentApplication = repository.findById(id).orElseThrow();
-        return model2dto(studentApplication);
+    public StudentApplicationDTO getById(Integer id) throws ServiceException {
+        StudentApplication studentApplication = repository.findById(id).orElseThrow(() -> new ServiceException(
+                "Student Application not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
+        return map(studentApplication);
     }
 
-    public void update(Integer id, StudentApplicationDTO dto) {
-        StudentApplication studentApplication = repository.findById(id).orElseThrow();
-        studentApplication = dto2model(studentApplication, dto);
-        repository.save(studentApplication);
+    public StudentApplicationDTO update(Integer id, StudentApplicationDTO dto) throws ServiceException {
+        StudentApplication studentApplication = repository.findById(id).orElseThrow(() -> new ServiceException(
+                "Student Application not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
+        map(studentApplication, dto);
+        return map(repository.save(studentApplication));
     }
 
     public void delete(Integer id) {
