@@ -20,14 +20,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>2.4.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+			<version>2.4.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.4.5</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -37,30 +40,36 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
+			<version>2.4.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
+			<version>6.1.7.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<version>2.4.5</version>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.23</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.20</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>2.4.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -71,11 +80,13 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
+			<version>5.4.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -87,18 +98,21 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<version>1.4.200</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>RELEASE</version>
+			<version>20.1.0</version>
+            <!--			<version>RELEASE</version>-->
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>RELEASE</version>
+			<version>20.1.0</version>
+			<!--			<version>RELEASE</version>-->
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -113,6 +127,7 @@
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
+							<version>1.18.20</version>
 						</exclude>
 					</excludes>
 				</configuration>
