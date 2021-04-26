@@ -35,3 +35,7 @@ databaseChangeLog:
              file: csv/teachers.csv
              relativeToChangelogFile: true
              tableName: teacher
+         - loadData:
+             file: csv/student_applications.csv
+             relativeToChangelogFile: true
+             tableName: student_application
