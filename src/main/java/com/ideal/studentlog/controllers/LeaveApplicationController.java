@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/leave_applications")
+@RequestMapping(path = "/leave-applications")
 @RequiredArgsConstructor
 public class LeaveApplicationController {
 

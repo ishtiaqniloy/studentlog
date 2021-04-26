@@ -41,7 +41,7 @@ public class LeaveApplicationControllerTest {
     @Test
     public void shouldReturnAvailableLeaveApplications() throws Exception {
         mockMvc
-                .perform(get("/leave_applications"))
+                .perform(get("/leave-applications"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].dateFrom", containsString("2021-04-20")))
@@ -52,7 +52,7 @@ public class LeaveApplicationControllerTest {
     @Test
     public void shouldReturnLeaveApplicationGetById() throws Exception {
         mockMvc
-                .perform(get("/leave_applications/2"))
+                .perform(get("/leave-applications/2"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.dateTo", containsString("2021-03-01")))
@@ -64,7 +64,7 @@ public class LeaveApplicationControllerTest {
     public void shouldCreateLeaveApplication() throws Exception {
         mockMvc
                 .perform(
-                        post("/leave_applications")
+                        post("/leave-applications")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
@@ -81,7 +81,7 @@ public class LeaveApplicationControllerTest {
     public void shouldUpdateLeaveApplication() throws Exception {
         mockMvc
                 .perform(
-                        patch("/leave_applications/3")
+                        patch("/leave-applications/3")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
@@ -98,7 +98,7 @@ public class LeaveApplicationControllerTest {
     public void shouldDeleteLeaveApplication() throws Exception {
         mockMvc
                 .perform(
-                        delete("/leave_applications/3")
+                        delete("/leave-applications/3")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
@@ -111,7 +111,7 @@ public class LeaveApplicationControllerTest {
     @Test
     public void shouldReturnNotFoundResponseForNonExistentLeaveApplication() throws Exception {
         mockMvc
-                .perform(get("/leave_applications/11"))
+                .perform(get("/leave-applications/11"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error", is("Not Found")))
