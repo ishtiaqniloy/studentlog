@@ -1,10 +1,8 @@
 package com.ideal.studentlog.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ideal.studentlog.database.repositories.LeaveApplicationRepository;
-import com.ideal.studentlog.helpers.dtos.LeaveApplicationDTO;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import com.ideal.studentlog.database.repositories.ClassStudentRepository;
+import com.ideal.studentlog.helpers.dtos.ClassStudentDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +13,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import javax.validation.constraints.NotNull;
+import java.text.ParseException;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LeaveApplicationControllerTest {
+public class ClassStudentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,98 +36,95 @@ public class LeaveApplicationControllerTest {
     private ObjectMapper mapper;
 
     @Autowired
-    private LeaveApplicationRepository repository;
+    private ClassStudentRepository repository;
 
     @Test
-    public void shouldReturnAvailableLeaveApplications() throws Exception {
+    public void shouldReturnAvailableClassStudents() throws Exception {
         mockMvc
-                .perform(get("/leave-applications"))
+                .perform(get("/class-students"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].approvedById", is(1)))
-                .andExpect(jsonPath("$[1].studentId", is(2)))
-                .andExpect(jsonPath("$", hasSize(3)));
+                .andExpect(jsonPath("$[0].classDetailsId", is(19)))
+                .andExpect(jsonPath("$[1].studentId", is(6)))
+                .andExpect(jsonPath("$", hasSize(100)));
     }
 
     @Test
-    public void shouldReturnLeaveApplicationGetById() throws Exception {
+    public void shouldReturnClassStudentGetById() throws Exception {
         mockMvc
-                .perform(get("/leave-applications/2"))
+                .perform(get("/class-students/3"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.applicationBody", containsString("With due respect and humble submission")))
-                .andExpect(jsonPath("$.approvedById", is(5)));
+                .andExpect(jsonPath("$.classDetailsId", is(19)))
+                .andExpect(jsonPath("$.studentId", is(4)));
     }
 
     @Test
     @Transactional
-    public void shouldCreateLeaveApplication() throws Exception {
+    public void shouldCreateClassStudent() throws Exception {
         mockMvc
                 .perform(
-                        post("/leave-applications")
+                        post("/class-students")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.applicationBody", is("Test Leave Application")))
-                .andExpect(jsonPath("$.approvedById", is(1)));
+                .andExpect(jsonPath("$.classDetailsId", is(15)))
+                .andExpect(jsonPath("$.studentId", is(5)));
 
-        assertEquals(repository.count(), 4);
+        assertEquals(repository.count(), 101);
     }
 
     @Test
     @Transactional
-    public void shouldUpdateLeaveApplication() throws Exception {
+    public void shouldUpdateClassStudent() throws Exception {
         mockMvc
                 .perform(
-                        patch("/leave-applications/3")
+                        patch("/class-students/4")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.applicationBody", is("Test Leave Application")))
-                .andExpect(jsonPath("$.studentId", is(9)));
+                .andExpect(jsonPath("$.classDetailsId", is(15)))
+                .andExpect(jsonPath("$.studentId", is(5)));
 
-        assertEquals(repository.count(), 3);
+        assertEquals(repository.count(), 100);
     }
 
     @Test
     @Transactional
-    public void shouldDeleteLeaveApplication() throws Exception {
+    public void shouldDeleteClassStudent() throws Exception {
         mockMvc
                 .perform(
-                        delete("/leave-applications/3")
+                        delete("/class-students/100")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertEquals(repository.count(), 2);
+        assertEquals(repository.count(), 99);
     }
 
     @Test
-    public void shouldReturnNotFoundResponseForNonExistentLeaveApplication() throws Exception {
+    public void shouldReturnNotFoundResponseForNonExistentClassStudent() throws Exception {
         mockMvc
-                .perform(get("/leave-applications/11"))
+                .perform(get("/class-students/101"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error", is("Not Found")))
                 .andExpect(jsonPath("$.code", is("API-404")))
-                .andExpect(jsonPath("$.message", is("Leave Application not found with ID: 11")));
+                .andExpect(jsonPath("$.message", is("Class Student not found with ID: 101")));
     }
 
     @NotNull
-    @Contract(" -> new")
-    private LeaveApplicationDTO getDto() {
-        return new LeaveApplicationDTO(
-                new Date(),
-                new Date(),
-                9,
-                "Test Leave Application",
-                1
+//    @Contract(" -> new")
+    private ClassStudentDTO getDto() throws ParseException {
+        return new ClassStudentDTO(
+                15,
+                5
         );
     }
 

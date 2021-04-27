@@ -46,7 +46,7 @@ public class StudentApplicationControllerTest {
                 .perform(get("/student-applications"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("Tori Muldoon")))
+                .andExpect(jsonPath("$[0].name", is("Ingunna Beseke")))
                 .andExpect(jsonPath("$[1].bloodGroup", is("A-")))
                 .andExpect(jsonPath("$", hasSize(20)));
     }
@@ -57,8 +57,8 @@ public class StudentApplicationControllerTest {
                 .perform(get("/student-applications/3"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Luise Halesworth")))
-                .andExpect(jsonPath("$.presentAddress", is("3 Esch Way")));
+                .andExpect(jsonPath("$.name", is("Ilyssa Start")))
+                .andExpect(jsonPath("$.presentAddress", is("761 Heffernan Trail")));
     }
 
     @Test
@@ -129,14 +129,14 @@ public class StudentApplicationControllerTest {
                 1,
                 "applicant name",
                 new SimpleDateFormat("yyyy-MM-dd").parse("2000-01-08"),
-                "A+ve",
+                "A+",
                 "1231541241",
-                "11212",
+                "184549362",
                 "flat, house, road, area",
                 "vill, po, ps, dist",
                 "Mrs. Mother",
                 "mother@test_email.com",
-                "01231121412",
+                "01828515043",
                 4
         );
     }

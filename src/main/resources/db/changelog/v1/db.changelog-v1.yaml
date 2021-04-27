@@ -19,6 +19,15 @@ databaseChangeLog:
       file: structure/create_attendances_table.yaml
       relativeToChangelogFile: true
   - include:
+      file: structure/create_school_classes_table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: structure/create_class_details_table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: structure/create_class_students_table.yaml
+      relativeToChangelogFile: true
+  - include:
       file: structure/create_tests_table.yaml
       relativeToChangelogFile: true
   - include:

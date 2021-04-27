@@ -15,12 +15,12 @@ databaseChangeLog:
                        nullable: false
                 - column:
                     name: date_from
-                    type: date
+                    type: dateTime
                     constraints:
                       nullable: false
                 - column:
                     name: date_to
-                    type: date
+                    type: dateTime
                     constraints:
                       nullable: false
                 - column:
