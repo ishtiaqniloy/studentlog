@@ -2,7 +2,7 @@ package com.ideal.studentlog.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideal.studentlog.database.repositories.AttendanceRepository;
-import com.ideal.studentlog.helpers.dtos.AttendanceDTO;
+import com.ideal.studentlog.helpers.dataclass.AttendanceDTO;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;

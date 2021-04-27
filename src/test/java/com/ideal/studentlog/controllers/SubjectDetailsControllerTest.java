@@ -2,7 +2,7 @@ package com.ideal.studentlog.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideal.studentlog.database.repositories.SubjectDetailsRepository;
-import com.ideal.studentlog.helpers.dtos.SubjectDetailsDTO;
+import com.ideal.studentlog.helpers.dataclass.SubjectDetailsDTO;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;

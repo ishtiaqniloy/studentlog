@@ -1,4 +1,4 @@
-package com.ideal.studentlog.helpers.dtos;
+package com.ideal.studentlog.helpers.dataclass;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,21 +6,23 @@ import lombok.NonNull;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class StudentApplicationDTO implements Serializable {
+public class AdminDTO {
 
     @NonNull
-    Date appliedDate;
-
-    Integer approvedBy;
+    @Size(min = 5, max = 50)
+    String adminId;
 
     @NonNull
     @Size(min = 5, max = 50)
     String name;
+
+    @NonNull
+    @Size(min = 5, max = 50)
+    String designation;
 
     @NonNull
     Date dateOfBirth;
@@ -30,12 +32,17 @@ public class StudentApplicationDTO implements Serializable {
     String bloodGroup;
 
     @NonNull
-    @Size(min = 8, max = 20)
-    String birthRegistrationId;
+    @Size(min = 5, max = 50)
+    String highestEducationLevel;
 
     @NonNull
-    @Size(min = 8, max = 20)
-    String registrationId;
+    Date joiningDate;
+
+    Date resignationDate;
+
+    @NonNull
+    @Pattern(regexp = "^(\\+88)?01[0-9]{9}$")
+    String contactNumber;
 
     @NonNull
     @Size(min = 5, max = 100)
@@ -44,17 +51,4 @@ public class StudentApplicationDTO implements Serializable {
     @NonNull
     @Size(min = 5, max = 100)
     String permanentAddress;
-
-    @NonNull
-    @Size(min = 5, max = 50)
-    String guardianName;
-
-    String guardianEmail;
-
-    @NonNull
-    @Pattern(regexp = "^(\\+88)?01[0-9]{9}$")
-    String guardianPhone;
-
-    @NonNull
-    Integer appliedForGrade;
 }

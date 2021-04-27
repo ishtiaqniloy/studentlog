@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.ideal.studentlog.database.models.Student;
 import com.ideal.studentlog.database.models.Attendance;
-import com.ideal.studentlog.helpers.dtos.AttendanceDTO;
+import com.ideal.studentlog.helpers.dataclass.AttendanceDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.database.repositories.StudentRepository;
 import com.ideal.studentlog.database.repositories.AttendanceRepository;
