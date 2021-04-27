@@ -1,7 +1,7 @@
 package com.ideal.studentlog.controllers;
 
 import com.ideal.studentlog.database.models.Teacher;
-import com.ideal.studentlog.helpers.dtos.TeacherDTO;
+import com.ideal.studentlog.helpers.dataclass.TeacherDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.TeacherService;
 import lombok.RequiredArgsConstructor;

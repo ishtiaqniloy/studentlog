@@ -6,7 +6,7 @@ import com.ideal.studentlog.database.models.TestResult;
 import com.ideal.studentlog.database.repositories.StudentRepository;
 import com.ideal.studentlog.database.repositories.TestRepository;
 import com.ideal.studentlog.database.repositories.TestResultRepository;
-import com.ideal.studentlog.helpers.dtos.TestResultDTO;
+import com.ideal.studentlog.helpers.dataclass.TestResultDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

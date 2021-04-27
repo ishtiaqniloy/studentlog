@@ -2,7 +2,7 @@ package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.Admin;
 import com.ideal.studentlog.database.repositories.AdminRepository;
-import com.ideal.studentlog.helpers.dtos.AdminDTO;
+import com.ideal.studentlog.helpers.dataclass.AdminDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

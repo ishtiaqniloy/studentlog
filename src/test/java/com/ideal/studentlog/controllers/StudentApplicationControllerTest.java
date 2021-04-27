@@ -2,7 +2,7 @@ package com.ideal.studentlog.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideal.studentlog.database.repositories.StudentApplicationRepository;
-import com.ideal.studentlog.helpers.dtos.StudentApplicationDTO;
+import com.ideal.studentlog.helpers.dataclass.StudentApplicationDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

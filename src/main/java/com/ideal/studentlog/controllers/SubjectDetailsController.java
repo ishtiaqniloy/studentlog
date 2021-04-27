@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import com.ideal.studentlog.helpers.dtos.SubjectDetailsDTO;
+import com.ideal.studentlog.helpers.dataclass.SubjectDetailsDTO;
 import com.ideal.studentlog.services.SubjectDetailsService;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 

@@ -1,6 +1,6 @@
 package com.ideal.studentlog.controllers;
 
-import com.ideal.studentlog.helpers.dtos.TestResultDTO;
+import com.ideal.studentlog.helpers.dataclass.TestResultDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.TestResultService;
 import lombok.RequiredArgsConstructor;
