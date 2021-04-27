@@ -15,7 +15,7 @@ databaseChangeLog:
                        nullable: false
                 -  column:
                      name: name
-                     type: varchar(30)
+                     type: varchar(50)
                      constraints:
                        nullable: false
                 -  column:
@@ -60,12 +60,12 @@ databaseChangeLog:
                       nullable: false
                 -  column:
                      name: present_address
-                     type: varchar(255)
+                     type: varchar(100)
                      constraints:
                        nullable: false
                 -  column:
                      name: permanent_address
-                     type: varchar(255)
+                     type: varchar(100)
                      constraints:
                        nullable: false
                 - column:
