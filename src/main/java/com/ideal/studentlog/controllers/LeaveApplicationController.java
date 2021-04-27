@@ -1,9 +1,9 @@
 package com.ideal.studentlog.controllers;
 
-import com.ideal.studentlog.database.models.Teacher;
-import com.ideal.studentlog.helpers.dataclass.TeacherDTO;
+import com.ideal.studentlog.database.models.LeaveApplication;
+import com.ideal.studentlog.helpers.dtos.LeaveApplicationDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
-import com.ideal.studentlog.services.TeacherService;
+import com.ideal.studentlog.services.LeaveApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,30 +12,30 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/teachers")
+@RequestMapping(path = "/leave-applications")
 @RequiredArgsConstructor
-public class TeacherController {
+public class LeaveApplicationController {
 
-    private final TeacherService service;
+    private final LeaveApplicationService service;
 
     @GetMapping
-    public List<TeacherDTO> getAll() {
+    public List<LeaveApplicationDTO> getAll() {
         return service.getAll();
     }
 
     @GetMapping(path = "/{id}")
-    public TeacherDTO getById(@PathVariable("id") Integer id) throws ServiceException {
+    public LeaveApplicationDTO getById(@PathVariable("id") Integer id) throws ServiceException {
         return service.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TeacherDTO create(@RequestBody @Valid TeacherDTO dto) {
+    public LeaveApplicationDTO create(@RequestBody @Valid LeaveApplicationDTO dto) throws ServiceException {
         return service.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public TeacherDTO update(@PathVariable("id") Integer id, @RequestBody @Valid TeacherDTO dto) throws ServiceException {
+    public LeaveApplicationDTO update(@PathVariable("id") Integer id, @RequestBody @Valid LeaveApplicationDTO dto) throws ServiceException {
         return service.update(id, dto);
     }
 

@@ -1,8 +1,10 @@
 package com.ideal.studentlog.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ideal.studentlog.database.repositories.StudentApplicationRepository;
-import com.ideal.studentlog.helpers.dataclass.StudentApplicationDTO;
+import com.ideal.studentlog.database.repositories.TeacherRepository;
+import com.ideal.studentlog.helpers.dtos.TeacherDTO;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -29,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StudentApplicationControllerTest {
+public class TeacherControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,106 +37,105 @@ public class StudentApplicationControllerTest {
     private ObjectMapper mapper;
 
     @Autowired
-    private StudentApplicationRepository repository;
+    private TeacherRepository repository;
 
     @Test
-    public void shouldReturnAvailableStudentApplications() throws Exception {
+    public void shouldReturnAvailableTeachers() throws Exception {
         mockMvc
-                .perform(get("/student-applications"))
+                .perform(get("/teachers"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("Ingunna Beseke")))
+                .andExpect(jsonPath("$[0].name", is("Abdul Karim")))
                 .andExpect(jsonPath("$[1].bloodGroup", is("A-")))
-                .andExpect(jsonPath("$", hasSize(20)));
+                .andExpect(jsonPath("$", hasSize(10)));
     }
 
     @Test
-    public void shouldReturnStudentApplicationGetById() throws Exception {
+    public void shouldReturnTeacherGetById() throws Exception {
         mockMvc
-                .perform(get("/student-applications/3"))
+                .perform(get("/teachers/3"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Ilyssa Start")))
-                .andExpect(jsonPath("$.presentAddress", is("761 Heffernan Trail")));
+                .andExpect(jsonPath("$.name", is("Sobur Ali Khan")))
+                .andExpect(jsonPath("$.presentAddress", is("Bashabo, Dhaka")));
     }
 
     @Test
     @Transactional
-    public void shouldCreateStudentApplication() throws Exception {
+    public void shouldCreateTeacher() throws Exception {
         mockMvc
                 .perform(
-                        post("/student-applications")
+                        post("/teachers")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is("applicant name")))
-                .andExpect(jsonPath("$.birthRegistrationId", is("1231541241")));
+                .andExpect(jsonPath("$.name", is("Test Teacher")))
+                .andExpect(jsonPath("$.teacherId", is("1011")));
 
-        assertEquals(repository.count(), 21);
+        assertEquals(repository.count(), 11);
     }
 
     @Test
     @Transactional
-    public void shouldUpdateStudentApplication() throws Exception {
+    public void shouldUpdateTeacher() throws Exception {
         mockMvc
                 .perform(
-                        patch("/student-applications/4")
+                        patch("/teachers/4")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("applicant name")))
-                .andExpect(jsonPath("$.birthRegistrationId", is("1231541241")));
+                .andExpect(jsonPath("$.name", is("Test Teacher")))
+                .andExpect(jsonPath("$.teacherId", is("1011")));
 
-        assertEquals(repository.count(), 20);
+        assertEquals(repository.count(), 10);
     }
 
     @Test
     @Transactional
-    public void shouldDeleteStudentApplication() throws Exception {
+    public void shouldDeleteTeacher() throws Exception {
         mockMvc
                 .perform(
-                        delete("/student-applications/10")
+                        delete("/teachers/10")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(getDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertEquals(repository.count(), 19);
+        assertEquals(repository.count(), 9);
     }
 
     @Test
-    public void shouldReturnNotFoundResponseForNonExistentStudentApplication() throws Exception {
+    public void shouldReturnNotFoundResponseForNonExistentTeacher() throws Exception {
         mockMvc
-                .perform(get("/student-applications/101"))
+                .perform(get("/teachers/11"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error", is("Not Found")))
                 .andExpect(jsonPath("$.code", is("API-404")))
-                .andExpect(jsonPath("$.message", is("Student Application not found with ID: 101")));
+                .andExpect(jsonPath("$.message", is("Teacher not found with ID: 11")));
     }
 
     @NotNull
-//    @Contract(" -> new")
-    private StudentApplicationDTO getDto() throws ParseException {
-        return new StudentApplicationDTO(
+    @Contract(" -> new")
+    private TeacherDTO getDto() {
+        return new TeacherDTO(
+                "Test Teacher",
                 new Date(),
-                1,
-                "applicant name",
-                new SimpleDateFormat("yyyy-MM-dd").parse("2000-01-08"),
-                "A+",
-                "1231541241",
-                "184549362",
-                "flat, house, road, area",
-                "vill, po, ps, dist",
-                "Mrs. Mother",
-                "mother@test_email.com",
-                "01828515043",
-                4
+                new Date(),
+                new Date(),
+                "MSc",
+                "1234567123",
+                "1011",
+                "Professor",
+                "01819101111",
+                "Dhaka",
+                "Dhaka",
+                "A+"
         );
     }
 

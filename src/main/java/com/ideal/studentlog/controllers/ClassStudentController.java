@@ -1,9 +1,9 @@
 package com.ideal.studentlog.controllers;
 
-import com.ideal.studentlog.database.models.Teacher;
-import com.ideal.studentlog.helpers.dataclass.TeacherDTO;
+
+import com.ideal.studentlog.helpers.dtos.ClassStudentDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
-import com.ideal.studentlog.services.TeacherService;
+import com.ideal.studentlog.services.ClassStudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,30 +12,30 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/teachers")
+@RequestMapping(path = "/class-students")
 @RequiredArgsConstructor
-public class TeacherController {
+public class ClassStudentController {
 
-    private final TeacherService service;
+    private final ClassStudentService service;
 
     @GetMapping
-    public List<TeacherDTO> getAll() {
+    public List<ClassStudentDTO> getAll() {
         return service.getAll();
     }
 
     @GetMapping(path = "/{id}")
-    public TeacherDTO getById(@PathVariable("id") Integer id) throws ServiceException {
+    public ClassStudentDTO getById(@PathVariable("id") Integer id) throws ServiceException {
         return service.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TeacherDTO create(@RequestBody @Valid TeacherDTO dto) {
+    public ClassStudentDTO create(@RequestBody @Valid ClassStudentDTO dto) throws ServiceException {
         return service.create(dto);
     }
 
     @PatchMapping(path = "/{id}")
-    public TeacherDTO update(@PathVariable("id") Integer id, @RequestBody @Valid TeacherDTO dto) throws ServiceException {
+    public ClassStudentDTO update(@PathVariable("id") Integer id, @RequestBody @Valid ClassStudentDTO dto) throws ServiceException {
         return service.update(id, dto);
     }
 
