@@ -4,6 +4,7 @@ import com.ideal.studentlog.database.models.Admin;
 import com.ideal.studentlog.database.repositories.AdminRepository;
 import com.ideal.studentlog.helpers.dataclass.AdminDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
+import com.ideal.studentlog.helpers.mappers.AdminMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AdminService {
+    private static final AdminMapper mapper = AdminMapper.INSTANCE;
     private final AdminRepository adminRepository;
 
     public List<AdminDTO> getAll(){
@@ -26,9 +28,11 @@ public class AdminService {
 
     public AdminDTO create(AdminDTO dto){
         Admin admin = new Admin();
-        map(dto, admin);
+//        map(dto, admin);
+        mapper.adminDtoToAdmin(dto, admin);
 
-        return map(adminRepository.save(admin));
+//        return map(adminRepository.save(admin));
+        return mapper.adminToAdminDto(adminRepository.save(admin));
     }
 
     public AdminDTO getById(Integer id) throws ServiceException{
