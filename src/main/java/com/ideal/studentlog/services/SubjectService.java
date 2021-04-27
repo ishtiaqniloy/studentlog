@@ -4,6 +4,7 @@ import com.ideal.studentlog.database.models.Subject;
 import com.ideal.studentlog.database.repositories.SubjectRepository;
 import com.ideal.studentlog.helpers.dataclass.SubjectDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
+import com.ideal.studentlog.helpers.mappers.SubjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,32 +16,36 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SubjectService {
+    private static final SubjectMapper mapper = SubjectMapper.INSTANCE;
+
     private final SubjectRepository subjectRepository;
 
     public List<SubjectDTO> getAll(){
         return subjectRepository
                 .findAll()
                 .stream()
-                .map(this::map)
+                .map(mapper::subjectToSubjectDto)
                 .collect(Collectors.toList());
     }
 
     public SubjectDTO getById(Integer id) throws ServiceException {
-        return map(getSubject(id));
+        return mapper.subjectToSubjectDto(getSubject(id));
     }
 
     @Transactional
     public SubjectDTO create(SubjectDTO dto) {
         Subject subject = new Subject();
-        map(dto, subject);
-        return map(subjectRepository.save(subject));
+        mapper.subjectDtoToSubject(dto, subject);
+
+        return mapper.subjectToSubjectDto(subjectRepository.save(subject));
     }
 
     @Transactional
     public SubjectDTO update(Integer id, SubjectDTO dto) throws ServiceException {
         Subject subject = getSubject(id);
-        map(dto, subject);
-        return map(subjectRepository.save(subject));
+        mapper.subjectDtoToSubject(dto, subject);
+
+        return mapper.subjectToSubjectDto(subjectRepository.save(subject));
     }
 
     @Transactional
@@ -53,17 +58,5 @@ public class SubjectService {
                 "Subject not found with ID: " + id,
                 HttpStatus.NOT_FOUND
         ));
-    }
-
-    private void map(SubjectDTO dto, Subject subject) {
-        subject.setName(dto.getName());
-        subject.setCategory(dto.getCategory());
-    }
-
-    private SubjectDTO map(Subject subject) {
-        return new SubjectDTO(
-                subject.getName(),
-                subject.getCategory()
-        );
     }
 }
