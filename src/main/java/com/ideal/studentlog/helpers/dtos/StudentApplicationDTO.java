@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
+import com.ideal.studentlog.helpers.validators.annotations.ValidAdminId;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -16,6 +17,8 @@ public class StudentApplicationDTO implements Serializable {
     @NonNull
     Date appliedDate;
 
+    @NonNull
+    @ValidAdminId
     Integer approvedBy;
 
     @NonNull

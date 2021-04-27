@@ -26,7 +26,7 @@ public class SubjectDetailsController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SubjectDetailsDTO create(@RequestBody SubjectDetailsDTO dto) {
+    public SubjectDetailsDTO create(@RequestBody SubjectDetailsDTO dto) throws ServiceException {
         return service.create(dto);
     }
     
