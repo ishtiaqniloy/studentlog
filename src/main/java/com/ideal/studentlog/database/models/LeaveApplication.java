@@ -30,6 +30,7 @@ public class LeaveApplication {
     @NonNull
     String applicationBody;
 
+    @NonNull
     @ManyToOne
     Teacher approvedBy;
 }

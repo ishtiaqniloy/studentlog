@@ -23,7 +23,8 @@ public class Attendance {
     Student student;
 
     @NonNull
-    Integer teacherId;
+    @ManyToOne
+    Teacher teacher;
 
     @NonNull
     Boolean isPresent;

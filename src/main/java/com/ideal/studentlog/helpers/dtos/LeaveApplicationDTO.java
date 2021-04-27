@@ -2,6 +2,7 @@ package com.ideal.studentlog.helpers.dtos;
 
 import com.ideal.studentlog.database.models.Student;
 import com.ideal.studentlog.database.models.Teacher;
+import com.ideal.studentlog.helpers.validators.annotations.ValidTeacherId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -26,5 +27,7 @@ public class LeaveApplicationDTO {
     @Size(max = 1000)
     String applicationBody;
 
+    @NonNull
+    @ValidTeacherId
     Integer approvedById;
 }
