@@ -1,4 +1,4 @@
-package com.ideal.studentlog.helpers.dtos;
+package com.ideal.studentlog.helpers.dataclass;
 
 import com.ideal.studentlog.helpers.validators.annotations.ValidStudentId;
 import lombok.AllArgsConstructor;

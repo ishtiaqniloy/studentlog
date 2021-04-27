@@ -2,7 +2,7 @@ package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.Teacher;
 import com.ideal.studentlog.database.repositories.TeacherRepository;
-import com.ideal.studentlog.helpers.dtos.TeacherDTO;
+import com.ideal.studentlog.helpers.dataclass.TeacherDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.ideal.studentlog.database.models.SubjectDetails;
-import com.ideal.studentlog.helpers.dtos.SubjectDetailsDTO;
+import com.ideal.studentlog.helpers.dataclass.SubjectDetailsDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import org.springframework.transaction.annotation.Transactional;
 import com.ideal.studentlog.database.repositories.SubjectDetailsRepository;

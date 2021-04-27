@@ -1,6 +1,6 @@
 package com.ideal.studentlog.helpers.exceptions;
 
-import com.ideal.studentlog.helpers.dtos.ErrorResponseDTO;
+import com.ideal.studentlog.helpers.dataclass.ErrorResponseDTO;
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;

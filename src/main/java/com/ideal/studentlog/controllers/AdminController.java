@@ -1,6 +1,6 @@
 package com.ideal.studentlog.controllers;
 
-import com.ideal.studentlog.helpers.dtos.AdminDTO;
+import com.ideal.studentlog.helpers.dataclass.AdminDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.AdminService;
 import lombok.RequiredArgsConstructor;

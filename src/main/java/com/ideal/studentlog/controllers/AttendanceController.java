@@ -1,6 +1,6 @@
 package com.ideal.studentlog.controllers;
 
-import com.ideal.studentlog.helpers.dtos.AttendanceDTO;
+import com.ideal.studentlog.helpers.dataclass.AttendanceDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.AttendanceService;
 import lombok.RequiredArgsConstructor;
