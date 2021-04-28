@@ -8,6 +8,7 @@ import com.ideal.studentlog.database.repositories.StudentRepository;
 import com.ideal.studentlog.database.repositories.TeacherRepository;
 import com.ideal.studentlog.helpers.dtos.LeaveApplicationDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
+import com.ideal.studentlog.helpers.mappers.LeaveApplicationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class LeaveApplicationService {
+    private static final LeaveApplicationMapper mapper = LeaveApplicationMapper.INSTANCE;
 
     private final LeaveApplicationRepository repository;
     private final StudentRepository studentRepository;
@@ -28,26 +30,34 @@ public class LeaveApplicationService {
         return repository
                 .findAll()
                 .stream()
-                .map(this::map)
+                .map(mapper::leaveApplicationToLeaveApplicationDto)
                 .collect(Collectors.toList());
     }
 
     public LeaveApplicationDTO getById(Integer id) throws ServiceException {
-        return map(getLeaveApplication(id));
+        return mapper.leaveApplicationToLeaveApplicationDto(getLeaveApplication(id));
     }
 
     @Transactional
     public LeaveApplicationDTO create(LeaveApplicationDTO dto) throws ServiceException {
         LeaveApplication leaveApplication = new LeaveApplication();
-        map(dto, leaveApplication);
-        return map(repository.save(leaveApplication));
+
+        mapper.leaveApplicationDtoToLeaveApplication(dto, leaveApplication);
+        leaveApplication.setApprovedBy(getTeacher(dto.getApprovedById()));
+        leaveApplication.setStudent(getStudent(dto.getStudentId()));
+
+        return mapper.leaveApplicationToLeaveApplicationDto(repository.save(leaveApplication));
     }
 
     @Transactional
     public LeaveApplicationDTO update(Integer id, LeaveApplicationDTO dto) throws ServiceException {
         LeaveApplication leaveApplication = getLeaveApplication(id);
-        map(dto, leaveApplication);
-        return map(repository.save(leaveApplication));
+
+        mapper.leaveApplicationDtoToLeaveApplication(dto, leaveApplication);
+        leaveApplication.setApprovedBy(getTeacher(dto.getApprovedById()));
+        leaveApplication.setStudent(getStudent(dto.getStudentId()));
+
+        return mapper.leaveApplicationToLeaveApplicationDto(repository.save(leaveApplication));
     }
 
     @Transactional
@@ -74,23 +84,5 @@ public class LeaveApplicationService {
                 "Student not found with ID: " + id,
                 HttpStatus.NOT_FOUND
         ));
-    }
-
-    private void map(LeaveApplicationDTO dto, LeaveApplication leaveApplication) throws ServiceException {
-        leaveApplication.setDateFrom(dto.getDateFrom());
-        leaveApplication.setDateTo(dto.getDateTo());
-        leaveApplication.setStudent(getStudent(dto.getStudentId()));
-        leaveApplication.setApplicationBody(dto.getApplicationBody());
-        leaveApplication.setApprovedBy(getTeacher(dto.getApprovedById()));
-    }
-
-    private LeaveApplicationDTO map(LeaveApplication leaveApplication) {
-        return new LeaveApplicationDTO(
-                leaveApplication.getDateFrom(),
-                leaveApplication.getDateTo(),
-                leaveApplication.getStudent().getId(),
-                leaveApplication.getApplicationBody(),
-                leaveApplication.getApprovedBy().getId()
-        );
     }
 }
