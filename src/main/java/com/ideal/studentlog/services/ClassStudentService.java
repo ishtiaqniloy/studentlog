@@ -1,11 +1,15 @@
 package com.ideal.studentlog.services;
 
 import com.ideal.studentlog.database.models.ClassStudent;
+import com.ideal.studentlog.database.models.Student;
+import com.ideal.studentlog.database.models.ClassDetails;
 import com.ideal.studentlog.database.repositories.ClassDetailsRepository;
 import com.ideal.studentlog.database.repositories.ClassStudentRepository;
 import com.ideal.studentlog.database.repositories.StudentRepository;
 import com.ideal.studentlog.helpers.dtos.ClassStudentDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
+import com.ideal.studentlog.helpers.mappers.ClassStudentMapper;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,72 +20,68 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ClassStudentService {
+    private static final ClassStudentMapper mapper = ClassStudentMapper.INSTANCE;
+
     private final ClassStudentRepository repository;
     private final ClassDetailsRepository classDetailsRepository;
     private final StudentRepository studentRepository;
 
-    //Todo: introduce model mapper
-    public ClassStudentDTO map(ClassStudent classStudent){
-        return new ClassStudentDTO(
-                classStudent.getClassDetails().getId(),
-                classStudent.getStudent().getId()
-        );
-    }
-
-    public void map(ClassStudent classStudent, ClassStudentDTO classStudentDTO) throws ServiceException {
-        classStudent.setClassDetails(classDetailsRepository.findById(classStudentDTO.getClassDetailsId()).orElseThrow(
-                () -> new ServiceException(
-                        "Class Details not found with ID: " + classStudentDTO.getClassDetailsId(),
-                        HttpStatus.NOT_FOUND
-                )
-        ));
-        classStudent.setStudent(studentRepository.findById(classStudentDTO.getStudentId()).orElseThrow(
-                () -> new ServiceException(
-                        "Student not found with ID: " + classStudentDTO.getStudentId(),
-                        HttpStatus.NOT_FOUND
-                )
-        ));
-    }
-
-    public List<ClassStudentDTO> map(List<ClassStudent> classStudents){
-        return classStudents
+    public List<ClassStudentDTO> getAll(){
+        return repository
+                .findAll()
                 .stream()
-                .map(this::map)
+                .map(mapper::classStudentToClassStudentDto)
                 .collect(Collectors.toList());
     }
 
-    public ClassStudent createModelWithDTO(ClassStudentDTO classStudentDTO) throws ServiceException {
-        ClassStudent classStudent = new ClassStudent();
-        map(classStudent, classStudentDTO);
-        return classStudent;
-    }
-
-    public List<ClassStudentDTO> getAll(){
-        return map(repository.findAll());
-    }
-
     public ClassStudentDTO getById(Integer id) throws ServiceException {
-        ClassStudent classStudent = repository.findById(id).orElseThrow(() -> new ServiceException(
-                "Class Student not found with ID: " + id,
-                HttpStatus.NOT_FOUND
-        ));
-        return map(classStudent);
+        return mapper.classStudentToClassStudentDto(getClassStudent(id));
     }
 
-    public ClassStudentDTO create(ClassStudentDTO classStudentDTO) throws ServiceException {
-        return map(repository.save(createModelWithDTO(classStudentDTO)));
+    public ClassStudentDTO create(ClassStudentDTO dto) throws ServiceException {
+        ClassStudent classStudent = new ClassStudent();
+
+        mapper.classStudentDtoToClassStudent(dto, classStudent);
+        classStudent.setStudent(getStudent(dto.getStudentId()));
+        classStudent.setClassDetails(getClassDetails(dto.getClassDetailsId()));
+
+        return mapper.classStudentToClassStudentDto(repository.save(classStudent));
     }
 
-    public ClassStudentDTO update(Integer id, ClassStudentDTO classStudentDTO) throws ServiceException {
-        ClassStudent classStudent = repository.findById(id).orElseThrow(() -> new ServiceException(
-                "Class Student not found with ID: " + id,
-                HttpStatus.NOT_FOUND
-        ));
-        map(classStudent, classStudentDTO);
-        return map(repository.save(classStudent));
+    public ClassStudentDTO update(Integer id, ClassStudentDTO dto) throws ServiceException {
+        ClassStudent classStudent = getClassStudent(id);
+
+        mapper.classStudentDtoToClassStudent(dto, classStudent);
+        classStudent.setStudent(getStudent(dto.getStudentId()));
+        classStudent.setClassDetails(getClassDetails(dto.getClassDetailsId()));
+
+        return mapper.classStudentToClassStudentDto(repository.save(classStudent));
     }
 
     public void delete(Integer id) {
         repository.deleteById(id);
+    }
+
+    private ClassStudent getClassStudent(@NonNull Integer id) throws ServiceException {
+        return repository.findById(id)
+                .orElseThrow(() -> new ServiceException(
+                        "Class Student not found with ID: " + id,
+                        HttpStatus.NOT_FOUND
+                ));
+    }
+
+    private Student getStudent(@NonNull Integer id) throws ServiceException {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new ServiceException(
+                        "Student not found with ID: " + id,
+                        HttpStatus.NOT_FOUND
+                ));
+    }
+
+    private ClassDetails getClassDetails(Integer id) throws ServiceException {
+        return classDetailsRepository.findById(id).orElseThrow(() -> new ServiceException(
+                "Class Details not found with ID: " + id,
+                HttpStatus.NOT_FOUND
+        ));
     }
 }
