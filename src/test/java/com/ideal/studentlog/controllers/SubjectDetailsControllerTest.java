@@ -68,8 +68,8 @@ public class SubjectDetailsControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.subjectId", is(11)))
-                .andExpect(jsonPath("$.teacherId", is(11)));
+                .andExpect(jsonPath("$.subjectId", is(10)))
+                .andExpect(jsonPath("$.teacherId", is(10)));
 
         assertEquals(repository.count(), 11);
     }
@@ -85,8 +85,8 @@ public class SubjectDetailsControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.subjectId", is(11)))
-                .andExpect(jsonPath("$.classDetailsId", is(6)));
+                .andExpect(jsonPath("$.subjectId", is(10)))
+                .andExpect(jsonPath("$.classDetailsId", is(10)));
 
         assertEquals(repository.count(), 11);
     }
@@ -121,9 +121,9 @@ public class SubjectDetailsControllerTest {
     @Contract(" -> new")
     private SubjectDetailsDTO getDto() {
         return new SubjectDetailsDTO(
-                11,
-                11,
-                6
+                10,
+                10,
+                10
         );
     }
 

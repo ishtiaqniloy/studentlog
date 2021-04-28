@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.ideal.studentlog.database.models.Student;
+import com.ideal.studentlog.database.models.Teacher;
 import com.ideal.studentlog.database.models.Attendance;
 import com.ideal.studentlog.helpers.dataclass.AttendanceDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.database.repositories.StudentRepository;
+import com.ideal.studentlog.database.repositories.TeacherRepository;
 import com.ideal.studentlog.database.repositories.AttendanceRepository;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 public class AttendanceService {
     private final AttendanceRepository repository;
     private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
+
 
 
     public List<AttendanceDTO> getAll() {
@@ -58,15 +62,24 @@ public class AttendanceService {
 
     private void map(AttendanceDTO dto,  Attendance attendance) throws ServiceException {
         Student student = getStudent(dto.getStudentId());
+        Teacher teacher = getTeacher(dto.getTeacherId());
 
         attendance.setDate(dto.getDate());
         attendance.setStudent(student);
-        attendance.setTeacherId(dto.getTeacherId());
+        attendance.setTeacher(teacher);
         attendance.setIsPresent(dto.getIsPresent());
 
     }
     private Student getStudent(@NonNull Integer id) throws ServiceException {
         return studentRepository.findById(id)
+                .orElseThrow(() -> new ServiceException(
+                        "Student not found with ID: " + id,
+                        HttpStatus.NOT_FOUND
+                ));
+    }
+
+    private Teacher getTeacher(@NonNull Integer id) throws ServiceException {
+        return teacherRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(
                         "Student not found with ID: " + id,
                         HttpStatus.NOT_FOUND
@@ -84,7 +97,7 @@ public class AttendanceService {
         return new AttendanceDTO(
                 attendance.getDate(),
                 attendance.getStudent().getId(),
-                attendance.getTeacherId(),
+                attendance.getTeacher().getId(),
                 attendance.getIsPresent()
                 );
     }
