@@ -1,5 +1,6 @@
 package com.ideal.studentlog.services;
 
+import com.ideal.studentlog.helpers.mappers.AttendanceMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AttendanceService {
+    private static final AttendanceMapper mapper = AttendanceMapper.INSTANCE;
+
     private final AttendanceRepository repository;
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
@@ -28,24 +31,37 @@ public class AttendanceService {
 
 
     public List<AttendanceDTO> getAll() {
-        return map(repository.findAll()); }
+        return repository
+                .findAll()
+                .stream()
+                .map(mapper::attendanceToAttendanceDto)
+                .collect(Collectors.toList());
+    }
 
     public AttendanceDTO getById(Integer id) throws ServiceException {
-        return map(getAttendance(id));
+        return mapper.attendanceToAttendanceDto(getAttendance(id));
     }
 
     @Transactional
     public AttendanceDTO create(AttendanceDTO dto) throws ServiceException {
         Attendance attendance = new Attendance();
-        map(dto, attendance);
-        return map(repository.save(attendance));
+
+        mapper.attendanceDtoToAttendance(dto, attendance);
+        attendance.setStudent(getStudent(dto.getStudentId()));
+        attendance.setTeacher(getTeacher(dto.getTeacherId()));
+
+        return mapper.attendanceToAttendanceDto(repository.save(attendance));
     }
 
     @Transactional
     public AttendanceDTO update(Integer id, AttendanceDTO dto) throws ServiceException {
         Attendance attendance = getAttendance(id);
-        map(dto, attendance);
-        return map(repository.save(attendance));
+
+        mapper.attendanceDtoToAttendance(dto, attendance);
+        attendance.setStudent(getStudent(dto.getStudentId()));
+        attendance.setTeacher(getTeacher(dto.getTeacherId()));
+
+        return mapper.attendanceToAttendanceDto(repository.save(attendance));
     }
 
     @Transactional
@@ -60,16 +76,6 @@ public class AttendanceService {
         ));
     }
 
-    private void map(AttendanceDTO dto,  Attendance attendance) throws ServiceException {
-        Student student = getStudent(dto.getStudentId());
-        Teacher teacher = getTeacher(dto.getTeacherId());
-
-        attendance.setDate(dto.getDate());
-        attendance.setStudent(student);
-        attendance.setTeacher(teacher);
-        attendance.setIsPresent(dto.getIsPresent());
-
-    }
     private Student getStudent(@NonNull Integer id) throws ServiceException {
         return studentRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(
@@ -85,22 +91,5 @@ public class AttendanceService {
                         HttpStatus.NOT_FOUND
                 ));
     }
-
-    private List<AttendanceDTO> map(List<Attendance> attendance) {
-        return attendance
-                .stream()
-                .map(this::map)
-                .collect(Collectors.toList());
-    }
-
-    private AttendanceDTO map(Attendance attendance) {
-        return new AttendanceDTO(
-                attendance.getDate(),
-                attendance.getStudent().getId(),
-                attendance.getTeacher().getId(),
-                attendance.getIsPresent()
-                );
-    }
-
 }
 
