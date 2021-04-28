@@ -37,7 +37,7 @@ public class TeacherService {
         Teacher teacher = new Teacher();
         mapper.teacherDtoToTeacher(dto, teacher);
 
-        return mapper.teacherToTeacherDto(teacher);
+        return mapper.teacherToTeacherDto(repository.save(teacher));
     }
 
     @Transactional
