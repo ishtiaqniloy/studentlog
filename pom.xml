@@ -26,6 +26,7 @@
 		<spring.security.test.version>5.4.6</spring.security.test.version>
 		<mysql.connector.java.version>8.0.23</mysql.connector.java.version>
 		<hibernate.validator.version>6.1.7.Final</hibernate.validator.version>
+		<swagger.ui.version>1.5.8</swagger.ui.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -122,7 +123,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.8</version>
+			<version>${swagger.ui.version}</version>
 		</dependency>
 	</dependencies>
 
