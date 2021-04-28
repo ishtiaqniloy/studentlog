@@ -3,8 +3,8 @@ package com.ideal.studentlog.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ideal.studentlog.helpers.mappers.SubjectDetailsMapper;
 import com.ideal.studentlog.database.models.*;
+import com.ideal.studentlog.helpers.mappers.SubjectDetailsMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,15 +43,23 @@ public class SubjectDetailsService {
     @Transactional
     public SubjectDetailsDTO create(SubjectDetailsDTO dto) throws ServiceException {
         SubjectDetails subjectDetails = new SubjectDetails();
+
         mapper.subjectDetailsDtoToSubjectDetails(dto, subjectDetails);
+        subjectDetails.setSubject(getSubject(dto.getSubjectId()));
+        subjectDetails.setTeacher(getTeacher(dto.getTeacherId()));
+        subjectDetails.setClassDetails(getClassDetails(dto.getClassDetailsId()));
 
         return mapper.subjectDetailsToSubjectDetailsDto(repository.save(subjectDetails));
     }
 
     @Transactional
     public SubjectDetailsDTO update(Integer id, SubjectDetailsDTO dto) throws ServiceException {
-        SubjectDetails subjectDetails = new SubjectDetails();
+        SubjectDetails subjectDetails = getSubjectDetails(id);
+
         mapper.subjectDetailsDtoToSubjectDetails(dto, subjectDetails);
+        subjectDetails.setSubject(getSubject(dto.getSubjectId()));
+        subjectDetails.setTeacher(getTeacher(dto.getTeacherId()));
+        subjectDetails.setClassDetails(getClassDetails(dto.getClassDetailsId()));
 
         return mapper.subjectDetailsToSubjectDetailsDto(repository.save(subjectDetails));
     }
@@ -91,5 +99,4 @@ public class SubjectDetailsService {
                         HttpStatus.NOT_FOUND
                 ));
     }
-
 }
