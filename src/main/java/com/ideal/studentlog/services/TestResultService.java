@@ -8,6 +8,7 @@ import com.ideal.studentlog.database.repositories.TestRepository;
 import com.ideal.studentlog.database.repositories.TestResultRepository;
 import com.ideal.studentlog.helpers.dataclass.TestResultDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
+import com.ideal.studentlog.helpers.mappers.TestResultMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,36 +21,52 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TestResultService {
+    private static final TestResultMapper mapper = TestResultMapper.INSTANCE;
 
     private final TestResultRepository repository;
     private final TestRepository testRepository;
     private final StudentRepository studentRepository;
 
     public List<TestResultDTO> getAll() {
-        return map(repository.findAll());
+        return repository
+                .findAll()
+                .stream()
+                .map(mapper::testResultToTestResultDto)
+                .collect(Collectors.toList());
     }
 
     public List<TestResultDTO> getByStudentId(Integer id) throws ServiceException {
-        getStudent(id);
-        return map(repository.findByStudentId(id));
+        return repository
+                .findByStudentId(id)
+                .stream()
+                .map(mapper::testResultToTestResultDto)
+                .collect(Collectors.toList());
     }
 
     public TestResultDTO getById(Integer id) throws ServiceException {
-        return map(getTestResult(id));
+        return mapper.testResultToTestResultDto(getTestResult(id));
     }
 
     @Transactional
     public TestResultDTO create(TestResultDTO dto) throws ServiceException {
         TestResult test = new TestResult();
-        map(dto, test);
-        return map(repository.save(test));
+
+        mapper.testResultDtoToTestResult(dto, test);
+        test.setStudent(getStudent(dto.getStudentId()));
+        test.setTest(getTest(dto.getTestId()));
+
+        return mapper.testResultToTestResultDto(repository.save(test));
     }
 
     @Transactional
     public TestResultDTO update(Integer id, TestResultDTO dto) throws ServiceException {
         TestResult test = getTestResult(id);
-        map(dto, test);
-        return map(repository.save(test));
+
+        mapper.testResultDtoToTestResult(dto, test);
+        test.setStudent(getStudent(dto.getStudentId()));
+        test.setTest(getTest(dto.getTestId()));
+
+        return mapper.testResultToTestResultDto(repository.save(test));
     }
 
     @Transactional
@@ -64,19 +81,6 @@ public class TestResultService {
         ));
     }
 
-    private void map(TestResultDTO dto, TestResult result) throws ServiceException {
-        Test test = testRepository.findById(dto.getTestId())
-                .orElseThrow(() -> new ServiceException(
-                        "Test not found with ID: " + dto.getTestId(),
-                        HttpStatus.NOT_FOUND
-                ));
-        Student student = getStudent(dto.getStudentId());
-
-        result.setTest(test);
-        result.setStudent(student);
-        result.setGrade(dto.getGrade());
-    }
-
     private Student getStudent(@NonNull Integer id) throws ServiceException {
         return studentRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(
@@ -85,18 +89,11 @@ public class TestResultService {
                 ));
     }
 
-    private List<TestResultDTO> map(List<TestResult> results) {
-        return results
-                .stream()
-                .map(this::map)
-                .collect(Collectors.toList());
-    }
-
-    private TestResultDTO map(TestResult result) {
-        return new TestResultDTO(
-                result.getTest().getId(),
-                result.getStudent().getId(),
-                result.getGrade()
-        );
+    private Test getTest(@NonNull Integer id) throws ServiceException {
+        return testRepository.findById(id)
+                .orElseThrow(() -> new ServiceException(
+                        "Test not found with ID: " + id,
+                        HttpStatus.NOT_FOUND
+                ));
     }
 }
