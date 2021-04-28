@@ -29,6 +29,7 @@
 		<org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
 		<maven.compiler.plugin>3.8.1</maven.compiler.plugin>
 		<lombok.mapstruct.binding>0.2.0</lombok.mapstruct.binding>
+		<swagger.ui.version>1.5.8</swagger.ui.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -121,6 +122,11 @@
 			<version>${annotations.version}</version>
 <!--			<version>RELEASE</version>-->
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${swagger.ui.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
