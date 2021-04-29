@@ -4,6 +4,7 @@ import com.ideal.studentlog.database.models.Test;
 import com.ideal.studentlog.database.repositories.TestRepository;
 import com.ideal.studentlog.helpers.dataclass.TestDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
+import com.ideal.studentlog.helpers.mappers.TestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TestService {
+    private static final TestMapper mappper = TestMapper.INSTANCE;
 
     private final TestRepository repository;
 
@@ -22,26 +24,28 @@ public class TestService {
         return repository
                 .findAll()
                 .stream()
-                .map(this::map)
+                .map(mappper::testToTestDto)
                 .collect(Collectors.toList());
     }
 
     public TestDTO getById(Integer id) throws ServiceException {
-        return map(getTest(id));
+        return mappper.testToTestDto(getTest(id));
     }
 
     @Transactional
     public TestDTO create(TestDTO dto) {
         Test test = new Test();
-        map(dto, test);
-        return map(repository.save(test));
+        mappper.testDtoToTest(dto, test);
+
+        return mappper.testToTestDto(repository.save(test));
     }
 
     @Transactional
     public TestDTO update(Integer id, TestDTO dto) throws ServiceException {
         Test test = getTest(id);
-        map(dto, test);
-        return map(repository.save(test));
+        mappper.testDtoToTest(dto, test);
+
+        return mappper.testToTestDto(repository.save(test));
     }
 
     @Transactional
@@ -55,19 +59,4 @@ public class TestService {
                 HttpStatus.NOT_FOUND
         ));
     }
-
-    private void map(TestDTO dto, Test test) {
-        test.setSubject(dto.getSubject());
-        test.setExaminer(dto.getExaminer());
-        test.setDate(dto.getDate());
-    }
-
-    private TestDTO map(Test test) {
-        return new TestDTO(
-                test.getSubject(),
-                test.getExaminer(),
-                test.getDate()
-        );
-    }
-
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ideal.studentlog.database.models.*;
+import com.ideal.studentlog.helpers.mappers.SubjectDetailsMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import com.ideal.studentlog.database.repositories.SubjectDetailsRepository;
 @Service
 @RequiredArgsConstructor
 public class SubjectDetailsService {
+    private static final SubjectDetailsMapper mapper = SubjectDetailsMapper.INSTANCE;
 
     private final SubjectDetailsRepository repository;
     private final TeacherRepository teacherRepository;
@@ -30,26 +32,36 @@ public class SubjectDetailsService {
         return repository
                 .findAll()
                 .stream()
-                .map(this::map)
+                .map(mapper::subjectDetailsToSubjectDetailsDto)
                 .collect(Collectors.toList());
     }
 
     public SubjectDetailsDTO getById(Integer id) throws ServiceException {
-        return map(getSubjectDetails(id));
+        return mapper.subjectDetailsToSubjectDetailsDto(getSubjectDetails(id));
     }
 
     @Transactional
     public SubjectDetailsDTO create(SubjectDetailsDTO dto) throws ServiceException {
         SubjectDetails subjectDetails = new SubjectDetails();
-        map(dto, subjectDetails);
-        return map(repository.save(subjectDetails));
+
+        mapper.subjectDetailsDtoToSubjectDetails(dto, subjectDetails);
+        subjectDetails.setSubject(getSubject(dto.getSubjectId()));
+        subjectDetails.setTeacher(getTeacher(dto.getTeacherId()));
+        subjectDetails.setClassDetails(getClassDetails(dto.getClassDetailsId()));
+
+        return mapper.subjectDetailsToSubjectDetailsDto(repository.save(subjectDetails));
     }
 
     @Transactional
     public SubjectDetailsDTO update(Integer id, SubjectDetailsDTO dto) throws ServiceException {
-        SubjectDetails subjectDetails = new SubjectDetails();
-        map(dto, subjectDetails);
-        return map(repository.save(subjectDetails));
+        SubjectDetails subjectDetails = getSubjectDetails(id);
+
+        mapper.subjectDetailsDtoToSubjectDetails(dto, subjectDetails);
+        subjectDetails.setSubject(getSubject(dto.getSubjectId()));
+        subjectDetails.setTeacher(getTeacher(dto.getTeacherId()));
+        subjectDetails.setClassDetails(getClassDetails(dto.getClassDetailsId()));
+
+        return mapper.subjectDetailsToSubjectDetailsDto(repository.save(subjectDetails));
     }
 
     @Transactional
@@ -87,23 +99,4 @@ public class SubjectDetailsService {
                         HttpStatus.NOT_FOUND
                 ));
     }
-
-    private void map(SubjectDetailsDTO dto, SubjectDetails subjectDetails) throws ServiceException {
-        Teacher teacher = getTeacher(dto.getTeacherId());
-        Subject subject = getSubject(dto.getSubjectId());
-        ClassDetails classDetails = getClassDetails(dto.getClassDetailsId());
-
-        subjectDetails.setSubject(subject);
-        subjectDetails.setTeacher(teacher);
-        subjectDetails.setClassDetails(classDetails);
-    }
-
-    private SubjectDetailsDTO map(SubjectDetails subjectDetails) {
-        return new SubjectDetailsDTO(
-                subjectDetails.getSubject().getId(),
-                subjectDetails.getTeacher().getId(),
-                subjectDetails.getClassDetails().getId()
-        );
-    }
-
 }

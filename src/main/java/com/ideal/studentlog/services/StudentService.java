@@ -4,6 +4,7 @@ import com.ideal.studentlog.database.models.Student;
 import com.ideal.studentlog.database.repositories.StudentRepository;
 import com.ideal.studentlog.helpers.dataclass.StudentDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
+import com.ideal.studentlog.helpers.mappers.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StudentService {
+    private static final StudentMapper mapper = StudentMapper.INSTANCE;
 
     private final StudentRepository repository;
 
@@ -22,26 +24,28 @@ public class StudentService {
         return repository
                 .findAll()
                 .stream()
-                .map(this::map)
+                .map(mapper::studentToStudentDto)
                 .collect(Collectors.toList());
     }
 
     public StudentDTO getById(Integer id) throws ServiceException {
-        return map(getStudent(id));
+        return mapper.studentToStudentDto(getStudent(id));
     }
 
     @Transactional
     public StudentDTO create(StudentDTO dto) {
         Student student = new Student();
-        map(dto, student);
-        return map(repository.save(student));
+        mapper.studentDtoToStudent(dto, student);
+
+        return mapper.studentToStudentDto(repository.save(student));
     }
 
     @Transactional
     public StudentDTO update(Integer id, StudentDTO dto) throws ServiceException {
         Student student = getStudent(id);
-        map(dto, student);
-        return map(repository.save(student));
+        mapper.studentDtoToStudent(dto, student);
+
+        return mapper.studentToStudentDto(repository.save(student));
     }
 
     @Transactional
@@ -55,33 +59,4 @@ public class StudentService {
                 HttpStatus.NOT_FOUND
         ));
     }
-
-    private void map(StudentDTO dto, Student student) {
-        student.setName(dto.getName());
-        student.setBirthRegistrationId(dto.getBirthRegistrationId());
-        student.setStudentId(dto.getStudentId());
-        student.setDateOfBirth(dto.getDateOfBirth());
-        student.setBloodGroup(dto.getBloodGroup());
-        student.setPresentAddress(dto.getPresentAddress());
-        student.setPermanentAddress(dto.getPermanentAddress());
-        student.setGuardianName(dto.getGuardianName());
-        student.setGuardianEmail(dto.getGuardianEmail());
-        student.setGuardianPhone(dto.getGuardianPhone());
-    }
-
-    private StudentDTO map(Student student) {
-        return new StudentDTO(
-                student.getName(),
-                student.getBirthRegistrationId(),
-                student.getStudentId(),
-                student.getDateOfBirth(),
-                student.getBloodGroup(),
-                student.getPresentAddress(),
-                student.getPermanentAddress(),
-                student.getGuardianName(),
-                student.getGuardianEmail(),
-                student.getGuardianPhone()
-        );
-    }
-
 }

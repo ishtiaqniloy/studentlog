@@ -1,5 +1,6 @@
 package com.ideal.studentlog.helpers.dataclass;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -11,12 +12,13 @@ import java.util.Date;
 public class TestDTO {
 
     @NonNull
-    String subject;
+    @Schema(description = "Subject", example = "Bengali")
+    private String subject;
 
     @NonNull
-    String examiner;
+    private String examiner;
 
     @NonNull
-    Date date;
+    private Date date;
 
 }

@@ -19,7 +19,7 @@ public class StudentApplicationDTO implements Serializable {
 
     @NonNull
     @ValidAdminId
-    Integer approvedBy;
+    Integer approvedById;
 
     @NonNull
     @Size(min = 5, max = 50)

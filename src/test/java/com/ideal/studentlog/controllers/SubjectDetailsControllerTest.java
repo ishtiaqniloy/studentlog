@@ -88,7 +88,7 @@ public class SubjectDetailsControllerTest {
                 .andExpect(jsonPath("$.subjectId", is(10)))
                 .andExpect(jsonPath("$.classDetailsId", is(10)));
 
-        assertEquals(repository.count(), 11);
+        assertEquals(repository.count(), 10);
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.ideal.studentlog.database.models.Admin;
 import com.ideal.studentlog.database.repositories.AdminRepository;
 import com.ideal.studentlog.helpers.dataclass.AdminDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
+import com.ideal.studentlog.helpers.mappers.AdminMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,32 +15,33 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AdminService {
+    private static final AdminMapper mapper = AdminMapper.INSTANCE;
     private final AdminRepository adminRepository;
 
     public List<AdminDTO> getAll(){
         return adminRepository
                 .findAll()
                 .stream()
-                .map(this::map)
+                .map(mapper::adminToAdminDto)
                 .collect(Collectors.toList());
     }
 
     public AdminDTO create(AdminDTO dto){
         Admin admin = new Admin();
-        map(dto, admin);
+        mapper.adminDtoToAdmin(dto, admin);
 
-        return map(adminRepository.save(admin));
+        return mapper.adminToAdminDto(adminRepository.save(admin));
     }
 
     public AdminDTO getById(Integer id) throws ServiceException{
-        return map(getAdmin(id));
+        return mapper.adminToAdminDto(getAdmin(id));
     }
 
     public AdminDTO update(Integer id, AdminDTO dto) throws ServiceException{
         Admin admin = getAdmin(id);
-        map(dto, admin);
+        mapper.adminDtoToAdmin(dto, admin);
 
-        return map(adminRepository.save(admin));
+        return mapper.adminToAdminDto(adminRepository.save(admin));
     }
 
     public void delete(Integer id){
@@ -51,35 +53,5 @@ public class AdminService {
                 "Admin not found with ID: " + id,
                 HttpStatus.NOT_FOUND
         ));
-    }
-
-    private void map(AdminDTO dto, Admin admin){
-        admin.setAdminId(dto.getAdminId());
-        admin.setName(dto.getName());
-        admin.setDesignation(dto.getDesignation());
-        admin.setDateOfBirth(dto.getDateOfBirth());
-        admin.setBloodGroup(dto.getBloodGroup());
-        admin.setHighestEducationLevel(dto.getHighestEducationLevel());
-        admin.setJoiningDate(dto.getJoiningDate());
-        admin.setResignationDate(dto.getResignationDate());
-        admin.setContactNumber(dto.getContactNumber());
-        admin.setPresentAddress(dto.getPresentAddress());
-        admin.setPermanentAddress(dto.getPermanentAddress());
-    }
-
-    private AdminDTO map(Admin admin){
-        return new AdminDTO(
-                admin.getAdminId(),
-                admin.getName(),
-                admin.getDesignation(),
-                admin.getDateOfBirth(),
-                admin.getBloodGroup(),
-                admin.getHighestEducationLevel(),
-                admin.getJoiningDate(),
-                admin.getResignationDate(),
-                admin.getContactNumber(),
-                admin.getPresentAddress(),
-                admin.getPermanentAddress()
-        );
     }
 }
