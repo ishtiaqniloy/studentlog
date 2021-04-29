@@ -153,7 +153,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.1.2</version>
+				<version>${checkstyle.version}</version>
 				<executions>
 					<execution>
 						<id>verify-style</id>
@@ -173,14 +173,15 @@
 								<property name="max" value="500" />
 								<property name="fileExtensions" value="java"/>
 							</module>
-<!--							&lt;!&ndash; Checks for long methods and constructors.                           &ndash;&gt;-->
-<!--							&lt;!&ndash; See https://checkstyle.sourceforge.io/config_sizes.html#MethodLength &ndash;&gt;-->
-<!--							<module name="MethodLength">-->
-<!--								<property name="tokens" value="METHOD_DEF"/>-->
-<!--								<property name="max" value="20"/>-->
-<!--								<property name="countEmpty" value="false"/>-->
-<!--							</module>-->
-
+							<!-- Checks for long methods and constructors.                           -->
+							<!-- See https://checkstyle.sourceforge.io/config_sizes.html#MethodLength -->
+							<module name="TreeWalker">
+								<module name="MethodLength">
+									<property name="tokens" value="METHOD_DEF"/>
+									<property name="max" value="35"/>
+									<property name="countEmpty" value="false"/>
+								</module>
+							</module>
 						</module>
 					</checkstyleRules>
 				</configuration>
