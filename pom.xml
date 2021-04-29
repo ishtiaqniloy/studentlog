@@ -18,6 +18,7 @@
 		<h2.version>1.4.200</h2.version>
 		<junit.version>4.13.2</junit.version>
 		<lombok.version>1.18.20</lombok.version>
+		<checkstyle.version>3.1.2</checkstyle.version>
 		<spring.boot.version>2.4.5</spring.boot.version>
 		<annotations.version>20.1.0</annotations.version>
 		<liquibase.core.version>4.3.1</liquibase.core.version>
@@ -116,7 +117,7 @@
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
 			<version>${annotations.version}</version>
-<!--			<version>RELEASE</version>-->
+			<!--			<version>RELEASE</version>-->
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -136,7 +137,40 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.1.2</version>
+				<executions>
+					<execution>
+						<id>verify-style</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<logViolationsToConsole>true</logViolationsToConsole>
+					<checkstyleRules>
+						<module name="Checker">
+							<!-- Checks for Size Violations.                    -->
+							<!-- See http://checkstyle.sf.net/config_sizes.html -->
+							<module name="FileLength">
+								<property name="max" value="500" />
+								<property name="fileExtensions" value="java"/>
+							</module>
+<!--							&lt;!&ndash; Checks for long methods and constructors.                           &ndash;&gt;-->
+<!--							&lt;!&ndash; See https://checkstyle.sourceforge.io/config_sizes.html#MethodLength &ndash;&gt;-->
+<!--							<module name="MethodLength">-->
+<!--								<property name="tokens" value="METHOD_DEF"/>-->
+<!--								<property name="max" value="20"/>-->
+<!--								<property name="countEmpty" value="false"/>-->
+<!--							</module>-->
+						</module>
+					</checkstyleRules>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
