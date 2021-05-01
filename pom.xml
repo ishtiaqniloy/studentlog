@@ -177,9 +177,13 @@
 							<module name="TreeWalker">
 								<module name="MethodLength">
 									<property name="tokens" value="METHOD_DEF"/>
-									<property name="max" value="35"/>
+									<property name="max" value="20"/>
 									<property name="countEmpty" value="false"/>
 								</module>
+							</module>
+							<!-- Suppression for resources -->
+							<module name="SuppressionFilter">
+								<property name="file" value="./suppression.xml"/>
 							</module>
 						</module>
 					</checkstyleRules>
