@@ -32,6 +32,13 @@ public class StudentApplicationService {
     }
 
     public StudentApplicationDTO create(StudentApplicationDTO dto) throws ServiceException {
+        //TODO: include this check in other services as well if we add `id` to DTO.
+        if(dto.getId() != null){
+            throw new ServiceException(
+                    "DTO includes non null id: " + dto.getId(),
+                    HttpStatus.NOT_ACCEPTABLE
+            );
+        }
         StudentApplication studentApplication = new StudentApplication();
 
         mapper.studentApplicationDtoToStudentApplication(dto, studentApplication);
@@ -45,6 +52,13 @@ public class StudentApplicationService {
     }
 
     public StudentApplicationDTO update(Integer id, StudentApplicationDTO dto) throws ServiceException {
+        //TODO: include this check in other services as well if we add `id` to DTO.
+        if(dto.getId() != id){
+            throw new ServiceException(
+                    "DTO id not equal to path id",
+                    HttpStatus.NOT_ACCEPTABLE
+            );
+        }
         StudentApplication studentApplication = getStudentApplication(id);
 
         mapper.studentApplicationDtoToStudentApplication(dto, studentApplication);
