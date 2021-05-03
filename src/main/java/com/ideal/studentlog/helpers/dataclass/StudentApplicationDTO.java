@@ -14,6 +14,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class StudentApplicationDTO implements Serializable {
 
+    Integer id;
+
     @NonNull
     Date appliedDate;
 

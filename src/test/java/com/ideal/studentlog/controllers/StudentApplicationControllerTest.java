@@ -3,6 +3,7 @@ package com.ideal.studentlog.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideal.studentlog.database.repositories.StudentApplicationRepository;
 import com.ideal.studentlog.helpers.dataclass.StudentApplicationDTO;
+import org.jetbrains.annotations.Contract;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,10 +69,11 @@ public class StudentApplicationControllerTest {
                 .perform(
                         post("/student-applications")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(getDto()))
+                                .content(mapper.writeValueAsString(getCreateDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is(21)))
                 .andExpect(jsonPath("$.name", is("applicant name")))
                 .andExpect(jsonPath("$.birthRegistrationId", is("1231541241")));
 
@@ -85,7 +87,7 @@ public class StudentApplicationControllerTest {
                 .perform(
                         patch("/student-applications/4")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(getDto()))
+                                .content(mapper.writeValueAsString(getUpdateDto(4)))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -101,8 +103,6 @@ public class StudentApplicationControllerTest {
         mockMvc
                 .perform(
                         delete("/student-applications/10")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(getDto()))
                 )
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -122,9 +122,32 @@ public class StudentApplicationControllerTest {
     }
 
     @NotNull
-//    @Contract(" -> new")
-    private StudentApplicationDTO getDto() throws ParseException {
+    @Contract(" -> new")
+    private StudentApplicationDTO getCreateDto() throws ParseException {
         return new StudentApplicationDTO(
+                null,
+                new Date(),
+                1,
+                "applicant name",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2000-01-08"),
+                "A+",
+                "1231541241",
+                "184549362",
+                "flat, house, road, area",
+                "vill, po, ps, dist",
+                "Mrs. Mother",
+                "mother@test_email.com",
+                "01828515043",
+                4,
+                "approved"
+        );
+    }
+
+    @NotNull
+    @Contract(" -> new")
+    private StudentApplicationDTO getUpdateDto(int id) throws ParseException {
+        return new StudentApplicationDTO(
+                id,
                 new Date(),
                 1,
                 "applicant name",
