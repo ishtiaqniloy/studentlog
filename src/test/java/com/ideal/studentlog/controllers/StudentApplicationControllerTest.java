@@ -137,7 +137,8 @@ public class StudentApplicationControllerTest {
                 "Mrs. Mother",
                 "mother@test_email.com",
                 "01828515043",
-                4
+                4,
+                "approved"
         );
     }
 

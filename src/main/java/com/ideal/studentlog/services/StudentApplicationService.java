@@ -35,7 +35,7 @@ public class StudentApplicationService {
         StudentApplication studentApplication = new StudentApplication();
 
         mapper.studentApplicationDtoToStudentApplication(dto, studentApplication);
-        studentApplication.setApprovedBy(getAdmin(dto.getApprovedById()));
+        studentApplication.setDecidedBy(getAdmin(dto.getDecidedById()));
 
         return mapper.studentApplicationToStudentApplicationDto(repository.save(studentApplication));
     }
@@ -48,7 +48,7 @@ public class StudentApplicationService {
         StudentApplication studentApplication = getStudentApplication(id);
 
         mapper.studentApplicationDtoToStudentApplication(dto, studentApplication);
-        studentApplication.setApprovedBy(getAdmin(dto.getApprovedById()));
+        studentApplication.setDecidedBy(getAdmin(dto.getDecidedById()));
 
         return mapper.studentApplicationToStudentApplicationDto(repository.save(studentApplication));
     }

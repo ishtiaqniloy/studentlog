@@ -19,7 +19,7 @@ databaseChangeLog:
                          constraints:
                            nullable: false
                     -  column:
-                         name: approved_by_id
+                         name: decided_by_id
                          type: int
                          constraints:
                            foreignKeyName: fk_student_application_approve_admin
@@ -74,6 +74,11 @@ databaseChangeLog:
                            nullable: false
                     -  column:
                          name: applied_for_grade
+                         type: int
+                         constraints:
+                           nullable: false
+                    -  column:
+                         name: status
                          type: varchar(20)
                          constraints:
                            nullable: false

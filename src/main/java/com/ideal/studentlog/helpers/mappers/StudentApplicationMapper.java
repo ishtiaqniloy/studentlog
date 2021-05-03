@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
 public interface StudentApplicationMapper {
     StudentApplicationMapper INSTANCE = Mappers.getMapper(StudentApplicationMapper.class);
 
-    @Mapping(target = "approvedById", source = "approvedBy.id")
+    @Mapping(target = "decidedById", source = "decidedBy.id")
     StudentApplicationDTO studentApplicationToStudentApplicationDto(StudentApplication studentApplication);
     void studentApplicationDtoToStudentApplication(StudentApplicationDTO dto,
                                       @MappingTarget StudentApplication studentApplication);

@@ -17,9 +17,8 @@ public class StudentApplicationDTO implements Serializable {
     @NonNull
     Date appliedDate;
 
-    @NonNull
     @ValidAdminId
-    Integer approvedById;
+    Integer decidedById;
 
     @NonNull
     @Size(min = 5, max = 50)
@@ -60,4 +59,7 @@ public class StudentApplicationDTO implements Serializable {
 
     @NonNull
     Integer appliedForGrade;
+
+    @NonNull
+    String status;
 }
