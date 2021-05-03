@@ -1,6 +1,6 @@
 package com.ideal.studentlog.helpers.validators.implementations;
 
-import com.ideal.studentlog.database.repositories.SubjectRepository;
+import com.ideal.studentlog.database.repositories.AdminRepository;
 import com.ideal.studentlog.helpers.validators.annotations.ValidAdminId;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +10,7 @@ import javax.validation.ConstraintValidatorContext;
 public class AdminIdValidityChecker implements ConstraintValidator<ValidAdminId, Integer> {
 
     @Autowired
-    private SubjectRepository repository;
+    private AdminRepository repository;
 
     @Override
     public void initialize(ValidAdminId constraintAnnotation) {
@@ -19,7 +19,7 @@ public class AdminIdValidityChecker implements ConstraintValidator<ValidAdminId,
 
     @Override
     public boolean isValid(Integer id, ConstraintValidatorContext context) {
-        return repository.findById(id).isPresent();
+        return id == null || repository.findById(id).isPresent();
     }
 
 }

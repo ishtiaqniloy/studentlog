@@ -65,6 +65,9 @@ public class StudentApplicationService {
     }
 
     private Admin getAdmin(Integer id) throws ServiceException {
+        if(id==null){
+            return null;
+        }
         return adminRepository.findById(id).orElseThrow(() -> new ServiceException(
                 "Admin not found with ID: " + id,
                 HttpStatus.NOT_FOUND

@@ -22,36 +22,26 @@ public class StudentApplication {
     @ManyToOne
     Admin decidedBy;
 
-    @NonNull
     String name;
 
-    @NonNull
     Date dateOfBirth;
 
-    @NonNull
     String bloodGroup;
 
-    @NonNull
     String birthRegistrationId;
 
-    @NonNull
     String registrationId;
 
-    @NonNull
     String presentAddress;
 
-    @NonNull
     String permanentAddress;
 
-    @NonNull
     String guardianName;
 
     String guardianEmail;
 
-    @NonNull
     String guardianPhone;
 
-    @NonNull
     Integer appliedForGrade;
 
     @NonNull
