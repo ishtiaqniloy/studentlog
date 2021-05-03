@@ -20,7 +20,7 @@ public class StudentApplication {
     Date appliedDate;
 
     @ManyToOne
-    Admin approvedBy;
+    Admin decidedBy;
 
     @NonNull
     String name;
@@ -54,6 +54,7 @@ public class StudentApplication {
     @NonNull
     Integer appliedForGrade;
 
-        
+    @NonNull
+    String status;
 
 }
