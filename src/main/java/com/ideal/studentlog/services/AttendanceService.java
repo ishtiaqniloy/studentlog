@@ -1,6 +1,9 @@
 package com.ideal.studentlog.services;
 
+import com.ideal.studentlog.helpers.dataclass.SaveAttendanceDTO;
+import com.ideal.studentlog.helpers.dataclass.SaveAttendanceListDTO;
 import com.ideal.studentlog.helpers.mappers.AttendanceMapper;
+import liquibase.pro.packaged.D;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,9 @@ import com.ideal.studentlog.database.repositories.AttendanceRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +33,6 @@ public class AttendanceService {
     private final AttendanceRepository repository;
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
-
 
 
     public List<AttendanceDTO> getAll() {
@@ -90,6 +95,24 @@ public class AttendanceService {
                         "Student not found with ID: " + id,
                         HttpStatus.NOT_FOUND
                 ));
+    }
+
+    public void save(SaveAttendanceListDTO listDTO, Integer teacherId) throws ServiceException {
+        List<Attendance> attendanceList = new ArrayList<>();
+        Teacher teacher = getTeacher(teacherId);
+
+        for (SaveAttendanceDTO dto : listDTO.getList()) {
+            Attendance attendance = new Attendance();
+
+            attendance.setDate(listDTO.getDate());
+            attendance.setStudent(getStudent(dto.getId()));
+            attendance.setTeacher(teacher);
+            attendance.setIsPresent(dto.getPresent());
+
+            attendanceList.add(attendance);
+        }
+
+        repository.saveAll(attendanceList);
     }
 }
 

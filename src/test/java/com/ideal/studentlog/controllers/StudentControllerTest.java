@@ -124,6 +124,7 @@ public class StudentControllerTest {
     @Contract(" -> new")
     private StudentDTO getDto() {
         return new StudentDTO(
+                null,
                 "Test Student",
                 "b:reg-001",
                 "student-001",

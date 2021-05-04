@@ -1,8 +1,11 @@
 package com.ideal.studentlog.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ideal.studentlog.database.models.Attendance;
 import com.ideal.studentlog.database.repositories.AttendanceRepository;
 import com.ideal.studentlog.helpers.dataclass.AttendanceDTO;
+import com.ideal.studentlog.helpers.dataclass.SaveAttendanceDTO;
+import com.ideal.studentlog.helpers.dataclass.SaveAttendanceListDTO;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -15,7 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
@@ -37,6 +41,8 @@ public class AttendanceControllerTest {
 
     @Autowired
     private AttendanceRepository repository;
+
+    private Date DATE = new GregorianCalendar(2021, Calendar.FEBRUARY, 11).getTime();
 
     @Test
     public void shouldReturnAvailableAttendances() throws Exception {
@@ -111,6 +117,48 @@ public class AttendanceControllerTest {
     }
 
     @Test
+    @Transactional
+    public void shouldSaveAttendance() throws Exception {
+        mockMvc
+                .perform(
+                        post("/attendance/save")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(getSaveAttendanceListDto()))
+                )
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        List<Attendance> attendances = repository.findByDate(DATE);
+
+        assertEquals(attendances.size(), 3);
+
+        testAbsentStudent(attendances);
+
+        testPresentStudents(attendances);
+    }
+
+    private void testPresentStudents(List<Attendance> attendances) {
+        List<Boolean> presentAttendances = attendances
+                .stream()
+                .filter(attendance -> attendance.getStudent().getId() != 3)
+                .map(Attendance::getIsPresent)
+                .collect(Collectors.toList());
+
+        assertEquals(presentAttendances.size(), 2);
+        assertEquals(presentAttendances.stream().reduce(Boolean::logicalAnd).orElse(false), true);
+    }
+
+    private void testAbsentStudent(List<Attendance> attendances) {
+        Optional<Boolean> attendanceOptional = attendances
+                .stream()
+                .filter(attendance -> attendance.getStudent().getId() == 3)
+                .map(Attendance::getIsPresent)
+                .findFirst();
+
+        assertEquals(attendanceOptional.orElse(true), false);
+    }
+
+    @Test
     public void shouldReturnNotFoundResponseForNonExistentAttendance() throws Exception {
         mockMvc
                 .perform(get("/attendance/11"))
@@ -129,6 +177,19 @@ public class AttendanceControllerTest {
                 5,
                 2,
                 true
+        );
+    }
+
+    @NotNull
+    @Contract(" -> new")
+    private SaveAttendanceListDTO getSaveAttendanceListDto() {
+        return new SaveAttendanceListDTO(
+                Arrays.asList(
+                        new SaveAttendanceDTO(1, true),
+                        new SaveAttendanceDTO(2, true),
+                        new SaveAttendanceDTO(3, false)
+                ),
+                DATE
         );
     }
 
