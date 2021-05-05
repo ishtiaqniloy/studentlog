@@ -1,6 +1,8 @@
 package com.ideal.studentlog.controllers;
 
 import com.ideal.studentlog.helpers.dataclass.AttendanceDTO;
+import com.ideal.studentlog.helpers.dataclass.SaveAttendanceDTO;
+import com.ideal.studentlog.helpers.dataclass.SaveAttendanceListDTO;
 import com.ideal.studentlog.helpers.exceptions.ServiceException;
 import com.ideal.studentlog.services.AttendanceService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @RestController
@@ -33,6 +36,12 @@ public class AttendanceController {
         return service.create(dto);
     }
     
+    @PostMapping(path = "/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void save(@RequestBody @Valid SaveAttendanceListDTO listDTO) throws ServiceException{
+        service.save(listDTO, 1);
+    }
+
     @PatchMapping(path = "/{id}")
     public AttendanceDTO update(@PathVariable("id") Integer id,  @RequestBody @Valid AttendanceDTO dto) throws ServiceException {
         return service.update(id, dto);

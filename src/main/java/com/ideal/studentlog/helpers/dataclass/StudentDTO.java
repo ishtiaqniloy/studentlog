@@ -13,6 +13,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class StudentDTO {
 
+    Integer id;
+
     @NonNull
     @Size(min = 5, max = 50)
     String name;
