@@ -2,9 +2,9 @@ package com.ideal.studentlog.helpers.dataclass;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -15,41 +15,41 @@ public class StudentDTO {
 
     Integer id;
 
-    @NonNull
+    @NotNull
     @Size(min = 5, max = 50)
     String name;
 
-    @NonNull
+    @NotNull
     @Size(min = 8, max = 20)
     String birthRegistrationId;
 
-    @NonNull
+    @NotNull
     @Size(min = 8, max = 20)
     String studentId;
 
-    @NonNull
+    @NotNull
     Date dateOfBirth;
 
-    @NonNull
+    @NotNull
     @Pattern(regexp = "^(A|B|AB|O)[+-]$")
     String bloodGroup;
 
-    @NonNull
+    @NotNull
     @Size(min = 5, max = 100)
     String presentAddress;
 
-    @NonNull
+    @NotNull
     @Size(min = 5, max = 100)
     String permanentAddress;
 
-    @NonNull
+    @NotNull
     @Size(min = 5, max = 50)
     String guardianName;
 
     @Email
     String guardianEmail;
 
-    @NonNull
+    @NotNull
     @Pattern(regexp = "^(\\+88)?01[0-9]{9}$")
     String guardianPhone;
 
